@@ -1,0 +1,23 @@
+{
+  "name": "fair-generator",
+  "version": "1.0.0",
+  "description": "generate random numbers for drug wars",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "big-integer": "^1.6.46",
+    "distributions": "^2.1.0",
+    "hash.js": "^1.1.7",
+    "mongodb": "^3.3.2",
+    "nthline": "^1.0.2",
+    "steem": "^0.7.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adrien M",
+  "license": "MIT"
+}
