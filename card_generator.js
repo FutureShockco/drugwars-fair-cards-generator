@@ -18,7 +18,7 @@ var card = {
         var bonus = card.bonusByQuality(newCard.quality)
 
         newCard.attack = card.normal(seeds.splice(0,1), bonus[0], bonus[1])
-        newCard.health = card.normal(seeds.splice(0,1), bonus[0], bonus[1], true)
+        newCard.health = card.normal(seeds.splice(0,1), bonus[0], bonus[1], 1)
         newCard.carry = card.normal(seeds.splice(0,1), bonus[0], bonus[1])
         newCard.speed = card.normal(seeds.splice(0,1), bonus[0], bonus[1])
 
@@ -101,7 +101,9 @@ var card = {
         rn /= 10000
         // https://upload.wikimedia.org/wikipedia/commons/9/9b/Probit_plot.png
         var normal = dist.inv(rn)
-        if (half && normal < mean)
+        if (half == 1 && normal < mean)
+            normal = 2*mean-normal
+        if (half == -1 && normal > mean)
             normal = 2*mean-normal
         return normal
     },
