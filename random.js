@@ -52,7 +52,7 @@ var random = {
             var granularity = range
             if (interval.precision != 0)
                 granularity *= Math.pow(10, interval.precision)
-            var random = result.mod(granularity).value
+            var random = Number(result.mod(granularity).value)
             if (interval.precision != 0)
                 random /= Math.pow(10, interval.precision)
             if (!random)
