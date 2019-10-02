@@ -1,5 +1,5 @@
 const steem = require('steem')
-const card = require('./card_generator.js')
+const pack = require('./pack_generator.js')
 const start_block = 36683168
 
 var streamer = {
@@ -73,7 +73,7 @@ var streamer = {
                 ) {
                     //console.log('Received '+op[1].amount+' from '+op[1].from+' '+op[1].memo)
                     random.seed(block, tx, function(seed) {
-                        card.forge(seed)
+                        pack.forge(seed)
                     })
                     
                 }

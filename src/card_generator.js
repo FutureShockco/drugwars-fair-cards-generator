@@ -3,14 +3,16 @@
 const distributions = require('distributions')
 const random = require('./random.js')
 const drugwars = require('drugwars')
-const maxSeeds = 20
+const maxSeeds = 30
 
 var card = {
-    forge: function (seed) {
+    forge: function (seeds, quality) {
         var newCard = {}
-        var seeds = [seed]
-        while (seeds.length < maxSeeds)
-            seeds.push(random.next(seeds[seeds.length - 1]))
+        if (!Array.isArray(seeds)) {
+            seeds = [seeds]
+            while (seeds.length < maxSeeds)
+                seeds.push(random.next(seeds[seeds.length - 1]))
+        }
 
         newCard.type = card.type(seeds.splice(0, 1))
         switch (newCard.type) {
@@ -24,7 +26,11 @@ var card = {
 
                 break;
             case 'hero':
-                newCard.quality = card.quality(seeds.splice(0, 1))
+                if (quality) {
+                    newCard.quality = quality
+                    seeds.splice(0, 1)
+                } else
+                    newCard.quality = card.quality(seeds.splice(0, 1))
                 newCard.family = card.family(seeds.splice(0, 1))
                 newCard.hero = card.hero(seeds.splice(0, 1), newCard.family)
                 newCard.attack_type = card.attack_type(seeds.splice(0, 1))
@@ -66,7 +72,6 @@ var card = {
         newCard.durability = card.uniform(seeds.splice(0, 1), 90, 100)
         newCard.degrability = card.normal(seeds.splice(0, 1), 50, 10)
 
-        console.log(newCard)
         return newCard
     },
     type: function (seed) {
@@ -161,9 +166,9 @@ var card = {
         return availActives[randomIndex]
     },
     passive_skill: function (seed, family) {
-        var availSuffixes = drugwars.Cards.passives[family]
-        var randomIndex = random.number(seed).mod(availSuffixes.length)
-        return availSuffixes[randomIndex]
+        var availPassives = drugwars.Cards.passives[family]
+        var randomIndex = random.number(seed).mod(availPassives.length)
+        return availPassives[randomIndex]
     },
     normal: function (seed, mean, stdDev, half) {
         var dist = distributions.Normal(mean, stdDev)
