@@ -27,32 +27,37 @@
 
 <body>
 
-  <div id="main" v-cloak>
+  <div id="main" >
     <div class="mt-2">
       <h3 class="mb-4 pt-3 vs">
         <img src="https://drugwars.io/img/drugwars.png">
         DrugWars Card Generator v1.0.0
       </h3>
       <div class="my-4 columns px-0 text-center">
-            <div class="card-box">
+          <div class="card-box">
               <div
                 v-for="card in cards"
-                class="card"
-                :id="card.id+'-card'"
+                :class="'card q'+card.quality"
+                :id="card.id[0]+'-card'"
                 @click="clickCard(card)"
               >
-
+                <img
+                  src="https://img.drugwars.io/cards/background/backside.png"
+                  alt="image host"
+                  :id="card.id[0]+'-card-back'"
+                  class="card-back"
+                />
                 <canvas
                   width="220"
                   height="295"
-                  :id="card.id+'-card-front'"
+                  :id="card.id[0]+'-card-front'"
                   class="card-front"
                 ></canvas>
-                <div class="card-shine" :id="card.id+'-card-shine'"></div>
-                <div v-if="card.open" class="sa-position sa-1"></div>
-                <div v-if="card.open" class="sa-position sa-2"></div>
-                <div v-if="card.open" class="sa-position sa-3"></div>
-                <div v-if="card.open" class="sa-position sa-4"></div>
+                <div class="card-shine" :id="card.id[0]+'-card-shine'"></div>
+                <div :class="'sa-position sa-1 s'+card.quality" :id="card.id[0]+'-spin'"></div>
+                <div :class="'sa-position sa-2 s'+card.quality" :id="card.id[0]+'-spin'"></div>
+                <div :class="'sa-position sa-3 s'+card.quality" :id="card.id[0]+'-spin'"></div>
+                <div :class="'sa-position sa-4 s'+card.quality" :id="card.id[0]+'-spin'"></div>
               </div>
             </div>
         </div>
@@ -68,6 +73,9 @@
       <button @click="handleSubmit" class="btn btn-primary mb-2">
         Verify
       </button>
+      <p class="le">MADE BY</p>
+
+      <p class="ac">FUTURESHOCK</p>
     </div>
   </div>
 
@@ -98,13 +106,14 @@
             client.database.getBlock(self.block).then(function (block) {
               client.database.getTransaction({ block_num: self.block, id: self.tx_id }).then(function (tx) {
                 drugwars_card_generator.random.checkseed(block, tx, self.hash, function (seed) {
-                  let card = drugwars_card_generator.card.forge(seed)
-                  card.id = seed.substring(0,8);
-                  self.cards.push(card)
-                  setTimeout(() => {
+                  self.cards = drugwars_card_generator.pack.forge(seed)
+                  let timer =1000;
                     self.cards.forEach(card => {
-                  var c = document.getElementById(card.id + '-card');
-                  let canvas = document.getElementById(card.id + '-card-front'),
+                      setTimeout(() => {
+                  var c = document.getElementById(card.id[0] + '-card');
+                  var b = document.getElementById(card.id[0] + '-card-back');
+
+                  let canvas = document.getElementById(card.id[0] + '-card-front'),
                   ctx = canvas.getContext('2d');
                   const background = new Image();
                   const attack_type = new Image();
@@ -127,7 +136,7 @@
                     ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
                   };
                   character.onload = () => {
-                    effect.src = `https://img.drugwars.io/cards/fx/1.png`;
+                    effect.src = `https://img.drugwars.io/cards/fx/${card.quality}.png`;
                     ctx.imageSmoothingEnabled = true;
                     ctx.drawImage(character, 0, 0, canvas.width, canvas.height);
                   };
@@ -181,7 +190,7 @@
                         break;
                     }
                     ctx.fillText(qualityname, 20, 140);
-                    ctx.font = '20px American Captain';
+                    ctx.font = '16px American Captain';
                     ctx.fillStyle = '#000';
                     self.wrapText(ctx,  card.prefixe + ' ' + card.hero.name +' '+ card.suffixe, 21, 163, canvas.width - 50, 16);
                     ctx.fillStyle = yellowgradient;
@@ -257,37 +266,7 @@
                     ctx.shadowBlur = 3;
                     ctx.font = '13px American Captain';
                     ctx.fillStyle = '#000';
-                    // ctx.fillText(card.family + ' ' + card.country, 30, 128);
 
-                    // this.wrapText(
-                    //   ctx,
-                    //   card.prefixe + ' ' + card.suffixe,
-                    //   32,
-                    //   116,
-                    //   canvas.width - 50,
-                    //   16,
-                    // );
-
-                    //NAME SHADOW
-                    // this.wrapText(
-                    //   ctx,
-                    //   card.prefixe + ' ' + card.name +' '+ card.suffixe,
-                    //   32,
-                    //   144,
-                    //   canvas.width - 50,
-                    //   16,
-                    // );
-                    //NAME GRADIENT
-
-                    // this.wrapText(
-                    //   ctx,
-                    //   card.prefixe + ' ' + card.suffixe,
-                    //   30,
-                    //   114,
-                    //   canvas.width - 50,
-                    //   16,
-                    // );
-                    // ctx.fillText(card.family + ' ' + card.country, 30, 130);
 
                     //DRAW SKILLS
                     ctx.font = '10px American Captain';
@@ -351,18 +330,13 @@
                     ctx.fillText('X1'.toUpperCase(), 190, 165);
                     self.loading = false;
 
-                    self.card = card;
+                    b.style.transform = 'rotateY(0deg)';
+                    c.style.transform = 'rotateY(0deg)';
                   };
+                      }, timer+=1000);
 
 
-                  // attack_type.onload = () => {
-                  //   ctx.imageSmoothingEnabled = true;
-                  //   ctx.drawImage(attack_type, 18, 15, 28, 28);
-
-                   
-                  // };
                 });
-                  }, 2000);
 
                 })
               })
@@ -389,15 +363,40 @@
             showDetails: function() {
               this.details = true;
             },
-           
+            clickCard: function(card) {
+              var c = document.getElementById(card.id[0] + '-card');
+              var b = document.getElementById(card.id[0] + '-card-back');
+              var f = document.getElementById(card.id[0] + '-card-front');
+              var s = document.getElementById(card.id[0] + '-card-shine');
+              var t = document.querySelectorAll('#'+card.id[0] + '-spin');
+              t.forEach(element => {
+                element.style.visibility = 'visible';
+              });
+             
+              c.style.boxShadow = 'none';
+              c.style.backgroundColor = 'transparent';
+              c.style.animationName = 'none';
+              c.style.transform = 'scale(1,1)';
+              b.style.animation = 'cardback 0.15s';
+              b.style.transform = 'rotateY(90deg)';
+              var shining = ``;
+              setTimeout(function() {
+                setTimeout(function() {
+                  // s.fadeIn()
+                  c.append(shining);
+                }, 302),
+                  (f.style.display = 'block');
+                b.style.display = 'none';
+              }, 150);
+              f.style.animation = 'cardfront 0.3s';
+              f.style.transform = 'rotateY(0deg)';
+            },
         }
       });
     };
   </script>
     <style type="text/css">
-      [v-cloak] {
-        display: none;
-      }
+
       body{
       background: rgb(8, 8, 8);
       color:white;
@@ -405,7 +404,7 @@
 
     #main {
       text-align: left;
-      max-width: 900px;
+      max-width: 1280px;
       padding-left: 20px;
       padding-right: 20px;
       margin: 0 auto;
@@ -413,65 +412,51 @@
       box-shadow: 0px 0px 3px #a87b00;
       border-radius: 10px;
     }
-      .card {
-        border: 0px;
-      }
 
-      .cards {
-        background-color: #000;
+
+      .ac {
         font-family: 'American Captain', Verdana, Tahoma;
       }
 
-     
-      .uppercase {
-        text-transform: uppercase;
+      .le {
+        font-family: 'Legend', Verdana, Tahoma;
       }
 
-      .value {
-        background-image: radial-gradient(
-          ellipse farthest-corner at center 0,
-          #0a0a0a -150%,
-          #131313 45%,
-          rgb(17, 17, 17) 85%
-        ) !important;
+      .card {
+        border: 0px;
+        border-radius: 20px!important;
+      }
+
+      .cards {
+        background-color: transparent;
+        font-family: 'American Captain', Verdana, Tahoma;
+      }
+
+      .uppercase {
+        text-transform: uppercase;
       }
 
       .minip {
         width: 24px;
       }
 
-      .vs {
-        font-family: 'American Captain', Verdana, Tahoma;
-
+      .result {
+        background-color: black;
+        border-radius: 5px;
+        border: 2px solid #ffc400;
       }
+
+      .unitname {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
 
       input {
         min-height: 16px !important;
         padding: 0px 8px !important;
-      }
-
-
-      @keyframes rotate {
-        0%,
-        20% {
-          transform: rotate(0);
-        }
-        46% {
-          transform: rotate(67deg);
-        }
-        66% {
-          transform: rotate(55deg);
-        }
-        80% {
-          transform: rotate(63deg);
-        }
-        86% {
-          transform: rotate(58deg);
-        }
-        93%,
-        to {
-          transform: rotate(60deg);
-        }
       }
 
       @keyframes cardback {
@@ -525,26 +510,310 @@
         }
       }
 
+      @-moz-keyframes spin0 {
+        to {
+          transform: rotateZ(0deg);
+        }
+        from {
+          transform: rotateZ(360deg);
+        }
+      }
+      @-webkit-keyframes spin0 {
+        to {
+          transform: rotateZ(0deg);
+        }
+        from {
+          transform: rotateZ(360deg);
+        }
+      }
+      @keyframes spin0 {
+        to {
+          transform: rotateZ(0deg);
+        }
+        from {
+          transform: rotateZ(360deg);
+        }
+      }
+      @-moz-keyframes spin1 {
+        to {
+          transform: rotateZ(45deg);
+        }
+        from {
+          transform: rotateZ(405deg);
+        }
+      }
+      @-webkit-keyframes spin1 {
+        to {
+          transform: rotateZ(45deg);
+        }
+        from {
+          transform: rotateZ(405deg);
+        }
+      }
+      @keyframes spin1 {
+        to {
+          transform: rotateZ(45deg);
+        }
+        from {
+          transform: rotateZ(405deg);
+        }
+      }
+      @-moz-keyframes spin2 {
+        to {
+          transform: rotateZ(90deg);
+        }
+        from {
+          transform: rotateZ(450deg);
+        }
+      }
+      @-webkit-keyframes spin2 {
+        to {
+          transform: rotateZ(90deg);
+        }
+        from {
+          transform: rotateZ(450deg);
+        }
+      }
+      @keyframes spin2 {
+        to {
+          transform: rotateZ(90deg);
+        }
+        from {
+          transform: rotateZ(450deg);
+        }
+      }
+      @-moz-keyframes spin3 {
+        to {
+          transform: rotateZ(135deg);
+        }
+        from {
+          transform: rotateZ(495deg);
+        }
+      }
+      @-webkit-keyframes spin3 {
+        to {
+          transform: rotateZ(135deg);
+        }
+        from {
+          transform: rotateZ(495deg);
+        }
+      }
+      @keyframes spin3 {
+        to {
+          transform: rotateZ(135deg);
+        }
+        from {
+          transform: rotateZ(495deg);
+        }
+      }
+      @-moz-keyframes spin4 {
+        to {
+          transform: rotateZ(180deg);
+        }
+        from {
+          transform: rotateZ(540deg);
+        }
+      }
+      @-webkit-keyframes spin4 {
+        to {
+          transform: rotateZ(180deg);
+        }
+        from {
+          transform: rotateZ(540deg);
+        }
+      }
+      @keyframes spin4 {
+        to {
+          transform: rotateZ(180deg);
+        }
+        from {
+          transform: rotateZ(540deg);
+        }
+      }
+
       .card-box {
-        font-family: 'American Captain';
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
         align-items: center;
       }
       .card-box .card {
-        font-family: 'Legend';
         position: relative;
         height: 295px;
         width: 220px;
-        box-shadow: 0px 0px 60px 6px rgba(255, 196, 8, 0.3);
         animation-name: cardshake;
         animation-iteration-count: infinite;
         animation-direction: alternate;
         cursor: pointer;
         background-color: transparent;
+        background-size: contain;
+      }
+      .q1{
+      box-shadow: 0px 0px 60px 6px rgba(8, 218, 255, 0.3)!important;
+      }
+      .q2{
+      box-shadow: 0px 0px 60px 6px rgba(255, 119, 8, 0.3)!important;
+      }
+      .q3{
+      box-shadow: 0px 0px 60px 6px rgba(226, 8, 255, 0.3)!important;
+      }
+      .q4{
+      box-shadow: 0px 0px 60px 6px rgba(66, 255, 8, 0.3)!important;
+      }
+      .q5{
+      box-shadow: 0px 0px 60px 6px rgba(255, 196, 8, 0.3)!important;
       }
 
+      .card-box .card .sa-1 {
+        width: 200%;
+        height: 60px;
+        transform-style: preserve-3d;
+        animation: spin1 10s linear infinite;
+        transform: rotateX(10deg) rotateZ(45deg);
+      }
+
+      .s1{
+      background-image: radial-gradient(
+          circle at center,
+          rgba(27, 255, 217, 0),
+          rgba(27, 255, 236, 0.2) 35%,
+          rgba(27, 240, 255, 0.05) 50%,
+          rgba(27, 255, 225, 0.025) 65%,
+          rgba(27, 255, 187, 0) 80%,
+          rgba(27, 247, 255, 0) 90%,
+          rgba(27, 255, 244, 0) 100%
+        );
+      }
+
+      .s2{
+      background-image: radial-gradient(
+          circle at center,
+          rgba(255, 164, 27, 0),
+          rgba(255, 175, 27, 0.2) 35%,
+          rgba(255, 175, 27, 0.05) 50%,
+          rgba(255, 164, 27, 0.025) 65%,
+          rgba(255, 156, 27, 0) 80%,
+          rgba(255, 156, 27, 0) 90%,
+          rgba(255, 149, 27, 0) 100%
+        );
+      }
+
+      .s3{
+      background-image: radial-gradient(
+          circle at center,
+          rgba(255, 27, 255, 0),
+          rgba(255, 27, 236, 0.2) 35%,
+          rgba(236, 27, 255, 0.05) 50%,
+          rgba(255, 27, 255, 0.025) 65%,
+          rgba(255, 27, 244, 0) 80%,
+          rgba(255, 27, 236, 0) 90%,
+          rgba(255, 27, 244, 0) 100%
+        );
+      }
+
+      .s4{
+      background-image: radial-gradient(
+          circle at center,
+          rgba(92, 255, 27, 0),
+          rgba(65, 255, 27, 0.2) 35%,
+          rgba(92, 255, 27, 0.05) 50%,
+          rgba(73, 255, 27, 0.025) 65%,
+          rgba(54, 255, 27, 0) 80%,
+          rgba(73, 255, 27, 0) 90%,
+          rgba(99, 255, 27, 0) 100%
+        );
+      }
+      
+      .s5{
+      background-image: radial-gradient(
+          circle at center,
+          rgba(255, 177, 27, 0),
+          rgba(255, 177, 27, 0.2) 35%,
+          rgba(255, 177, 27, 0.05) 50%,
+          rgba(255, 177, 27, 0.025) 65%,
+          rgba(255, 177, 27, 0) 80%,
+          rgba(255, 177, 27, 0) 90%,
+          rgba(255, 177, 27, 0) 100%
+        );
+      }
+
+      .card-box .card:hover {
+        animation-name: hoverscale;
+        animation-duration: 0.3s;
+        animation-iteration-count: 1;
+        transform: scale(1.1, 1.1);
+      }
+      .card-box .card:nth-of-type(1) {
+        animation-duration: 2.15s;
+      }
+      .card-box .card:nth-of-type(2) {
+        animation-duration: 2.35s;
+      }
+      .card-box .card:nth-of-type(3) {
+        animation-duration: 2.55s;
+      }
+      .card-box .card:nth-of-type(4) {
+        animation-duration: 1.95s;
+      }
+      .card-box .card .card-back {
+        display: block;
+        height: 100%;
+        width: auto;
+      }
+      .card-box .card .card-front {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        border-radius: 20px;
+
+        height: 100%;
+        width: auto;
+        transform: rotateY(180deg);
+        z-index: 1;
+      }
+      .card-box .card .card-shine {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+        width: 100px;
+        height: 100px;
+
+        box-shadow: 0px 0px 180px 60px rgba(255, 196, 6, 0.3);
+        z-index: 0.5;
+      }
+
+      .card-box .card .sa-position {
+        visibility: hidden;
+        position: absolute;
+        top: 30%;
+        left: -50%;
+        z-index: 0, 5;
+      }
+
+      .card-box .card .sa-2 {
+        width: 200%;
+        height: 60px;
+        transform-style: preserve-3d;
+        animation: spin2 10s linear infinite;
+        transform: rotateX(10deg) rotateZ(90deg);
+      }
+      .card-box .card .sa-3 {
+        width: 200%;
+        height: 60px;
+        transform-style: preserve-3d;
+        animation: spin3 10s linear infinite;
+        transform: rotateX(10deg) rotateZ(135deg);
+      }
+      .card-box .card .sa-4 {
+        width: 200%;
+        height: 60px;
+        transform-style: preserve-3d;
+        animation: spin4 10s linear infinite;
+        transform: rotateX(10deg) rotateZ(180deg);
+      }
     </style>
 
 </body>

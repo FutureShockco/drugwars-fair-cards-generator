@@ -2,12 +2,13 @@
 
 const distributions = require('distributions')
 const random = require('./random.js')
-const drugwars = require('drugwars')
+const {Cards} = require('drugwars')
 const maxSeeds = 30
 
 var card = {
     forge: function (seeds, quality) {
         var newCard = {}
+        newCard.id = seeds
         if (!Array.isArray(seeds)) {
             seeds = [seeds]
             while (seeds.length < maxSeeds)
@@ -15,6 +16,12 @@ var card = {
         }
 
         newCard.type = card.type(seeds.splice(0, 1))
+        if (quality) {
+            newCard.quality = quality
+            seeds.splice(0, 1)
+        } else
+            newCard.quality = card.quality(seeds.splice(0, 1))
+
         switch (newCard.type) {
             case 'building':
 
@@ -26,11 +33,6 @@ var card = {
 
                 break;
             case 'hero':
-                if (quality) {
-                    newCard.quality = quality
-                    seeds.splice(0, 1)
-                } else
-                    newCard.quality = card.quality(seeds.splice(0, 1))
                 newCard.family = card.family(seeds.splice(0, 1))
                 newCard.hero = card.hero(seeds.splice(0, 1), newCard.family)
                 newCard.attack_type = card.attack_type(seeds.splice(0, 1))
@@ -146,27 +148,27 @@ var card = {
         return 'gang'
     },
     hero: function (seed, family) {
-        var availHeroes = drugwars.Cards.heroes[family]
+        var availHeroes = Cards.heroes[family]
         var randomIndex = random.number(seed).mod(availHeroes.length)
         return availHeroes[randomIndex]
     },
     prefixe: function (seed, family, quality) {
-        var availPrefixes = drugwars.Cards.prefixes[family][quality]
+        var availPrefixes = Cards.prefixes[family][quality]
         var randomIndex = random.number(seed).mod(availPrefixes.length)
         return availPrefixes[randomIndex]
     },
     suffixe: function (seed, attack_type, quality) {
-        var availSuffixes = drugwars.Cards.suffixes[attack_type][quality]
+        var availSuffixes = Cards.suffixes[attack_type][quality]
         var randomIndex = random.number(seed).mod(availSuffixes.length)
         return availSuffixes[randomIndex]
     },
     active_skill: function (seed, family, attack_type) {
-        var availActives = drugwars.Cards.actives[family][attack_type]
+        var availActives = Cards.actives[family][attack_type]
         var randomIndex = random.number(seed).mod(availActives.length)
         return availActives[randomIndex]
     },
     passive_skill: function (seed, family) {
-        var availPassives = drugwars.Cards.passives[family]
+        var availPassives = Cards.passives[family]
         var randomIndex = random.number(seed).mod(availPassives.length)
         return availPassives[randomIndex]
     },

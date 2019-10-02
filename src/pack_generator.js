@@ -1,4 +1,5 @@
 const card = require('./card_generator.js')
+const random = require('./random.js')
 const seedsPerCard = 30
 const cardsPerPack = 5
 
