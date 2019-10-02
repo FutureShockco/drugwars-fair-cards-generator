@@ -1,11 +1,9 @@
 random = require('./random.js')
-
 const steemStreamer = require('./steemStreamer.js')
 const MongoClient = require('mongodb').MongoClient
 const mongoUrl = 'mongodb://localhost:27017'
 const mongoDbName = 'fairgen'
 db = null
-
 
 random.init(function() {
     MongoClient.connect(mongoUrl, { useNewUrlParser: true }, function(err, client) {
@@ -15,4 +13,3 @@ random.init(function() {
         steemStreamer.start(db)
     })
 })
-

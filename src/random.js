@@ -1,8 +1,8 @@
 const fs = require('fs')
 const bigInt = require('big-integer')
 const sha512 = require('hash.js/lib/hash/sha/512')
-const path_hash = 'hashes.txt'
-const path_hash_public = 'hashes_public.txt'
+const path_hash = './src/hashes.txt'
+const path_hash_public = './src/hashes_public.txt'
 
 var random = {
     init: function(cb) {
@@ -39,6 +39,11 @@ var random = {
             var finalSeed = sha512().update(serverSeed+txSeed).digest('hex')
             cb(finalSeed)
         })
+    },
+    checkseed: function(block, tx, serverSeed, cb) {
+            var txSeed = random.transactionSeed(block, tx)
+            var finalSeed = sha512().update(serverSeed+txSeed).digest('hex')
+            return cb(finalSeed)
     },
     next: function(seed) {
         return sha512().update(seed).digest('hex')

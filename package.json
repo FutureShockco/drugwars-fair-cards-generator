@@ -1,23 +1,61 @@
 {
-  "name": "fair-generator",
+  "name": "drugwars_card_generator",
   "version": "1.0.0",
-  "description": "generate random numbers for drug wars",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
+  "description": "A lightweight JavaScript library for DrugWars Cards",
+  "main": "src/index.js",
+  "browser": "dist/drugwars_card_generator.min.js",
+  "scripts": {
+    "start": "node src/start.js",
+    "build": "taskr cjs && webpack",
+    "lint": "eslint 'src/**/*.js' --fix",
+    "prettier": "prettier 'src/**/*.js' --list-different",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "big-integer": "^1.6.46",
+    "debug": "^4.1.1",
     "distributions": "^2.1.0",
+    "drugwars": "^0.1.23",
     "hash.js": "^1.1.7",
     "mongodb": "^3.3.2",
     "nthline": "^1.0.2",
     "steem": "^0.7.7"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "@taskr/babel": "^1.1.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.0.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "bluebird": "^3.5.3",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^2.10.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^2.7.0",
+    "jest": "^23.6.0",
+    "prettier": "^1.14.3",
+    "taskr": "^1.1.0",
+    "webpack": "^4.24.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-visualizer-plugin": "^0.1.11"
   },
-  "author": "Adrien M",
-  "license": "MIT"
+  "author": "Adrien_M , hightouch",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FutureShockco/drugwars.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FutureShockco/drugwars.js/issues"
+  }
 }
