@@ -82,7 +82,7 @@ var card = {
             max: 100000,
             precision: 0
         })
-        if (rn > 99999)
+        if (rn > 99000)
             return 'building'
         if (rn > 95000)
             return 'unit'
@@ -96,8 +96,7 @@ var card = {
             max: 100000,
             precision: 0
         })
-        // todo
-        if (rn > 99999)
+        if (rn > 99000)
             return 1
         if (rn > 95000)
             return 2
