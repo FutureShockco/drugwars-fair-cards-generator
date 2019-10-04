@@ -16,7 +16,7 @@
     "big-integer": "^1.6.46",
     "debug": "^4.1.1",
     "distributions": "^2.1.0",
-    "drugwars": "^0.1.24",
+    "drugwars": "^0.1.25",
     "hash.js": "^1.1.7",
     "mongodb": "^3.3.2",
     "nthline": "^1.0.2",

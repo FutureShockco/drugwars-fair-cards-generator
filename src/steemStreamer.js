@@ -67,9 +67,9 @@ var streamer = {
             let tx = txs[i];
             for (let y = 0; y < tx.operations.length; y++) {
                 let op = tx.operations[y];
-                if (op[0] === 'transfer'
+                if (op[0] === 'comment'
                    // && op[1].to === 'drugwars'
-                    && op[1].memo
+
                 ) {
                     //console.log('Received '+op[1].amount+' from '+op[1].from+' '+op[1].memo)
                     random.seed(block, tx, function(seed) {

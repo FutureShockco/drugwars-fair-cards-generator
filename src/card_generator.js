@@ -6,7 +6,7 @@ const {Cards} = require('drugwars')
 const maxSeeds = 30
 
 var card = {
-    forge: function (seeds, quality) {
+    forge: function (seeds, forceQuality) {
         var newCard = {}
         newCard.id = seeds
         if (!Array.isArray(seeds)) {
@@ -16,15 +16,18 @@ var card = {
         }
 
         newCard.type = card.type(seeds.splice(0, 1))
-        if (quality) {
-            newCard.quality = quality
-            seeds.splice(0, 1)
+        if (forceQuality) {
+            newCard.quality = card.quality(seeds.splice(0, 1))
+            if(newCard.quality > 1)
+            {
+                newCard.quality -= 1
+            }
         } else
             newCard.quality = card.quality(seeds.splice(0, 1))
 
         switch (newCard.type) {
             case 'building':
-
+                
                 break;
             case 'unit':
 
@@ -84,7 +87,7 @@ var card = {
         })
         if (rn > 99000)
             return 'building'
-        if (rn > 95000)
+        if (rn > 96000)
             return 'unit'
         if (rn > 90000)
             return 'item'
@@ -96,13 +99,13 @@ var card = {
             max: 100000,
             precision: 0
         })
-        if (rn > 99000)
+        if (rn > 99500)
             return 1
-        if (rn > 95000)
+        if (rn > 97000)
             return 2
-        if (rn > 80000)
+        if (rn > 88000)
             return 3
-        if (rn > 70000)
+        if (rn > 87000)
             return 4
         return 5
     },
