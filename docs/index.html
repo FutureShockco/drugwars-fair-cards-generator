@@ -10,57 +10,44 @@
   <script src="./drugwars_card_generator.min.js"></script>
   <script src="https://unpkg.com/dsteem@^0.8.0/dist/dsteem.js"></script>
   <style>
-      @font-face {
-        font-family: 'American Captain';
-        src: url('./fonts/AmericanCaptain.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-      }
-      @font-face {
-        font-family: 'Legend';
-        src: url('./fonts/Legend.woff') format('woff');
-        font-weight: lighter;
-        font-style: normal;
-      }
-    </style>
+    @font-face {
+      font-family: 'American Captain';
+      src: url('./fonts/AmericanCaptain.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Legend';
+      src: url('./fonts/Legend.woff') format('woff');
+      font-weight: lighter;
+      font-style: normal;
+    }
+  </style>
 </head>
 
 <body>
 
-  <div id="main" >
+  <div id="main">
     <div class="mt-2">
       <h3 class="mb-4 pt-3 vs">
         <img src="https://drugwars.io/img/drugwars.png">
         DrugWars Card Generator v1.0.0
       </h3>
       <div class="my-4 columns px-0 text-center">
-          <div class="card-box">
-              <div
-                v-for="card in cards"
-                :class="'card q'+card.quality"
-                :id="card.id[0]+'-card'"
-                @click="clickCard(card)"
-              >
-                <img
-                  src="https://img.drugwars.io/cards/background/backside.png"
-                  alt="image host"
-                  :id="card.id[0]+'-card-back'"
-                  class="card-back"
-                />
-                <canvas
-                  width="220"
-                  height="295"
-                  :id="card.id[0]+'-card-front'"
-                  class="card-front"
-                ></canvas>
-                <div class="card-shine" :id="card.id[0]+'-card-shine'"></div>
-                <div :class="'sa-position sa-1 s'+card.quality" :id="card.id[0]+'-spin'"></div>
-                <div :class="'sa-position sa-2 s'+card.quality" :id="card.id[0]+'-spin'"></div>
-                <div :class="'sa-position sa-3 s'+card.quality" :id="card.id[0]+'-spin'"></div>
-                <div :class="'sa-position sa-4 s'+card.quality" :id="card.id[0]+'-spin'"></div>
-              </div>
-            </div>
+        <div class="card-box">
+          <div v-for="card in cards" :class="'card q'+card.quality" :id="card.id[0]+'-card'" @click="clickCard(card)">
+            <img src="https://img.drugwars.io/cards/background/backside.png" alt="image host"
+              :id="card.id[0]+'-card-back'" class="card-back" />
+            <canvas width="220" height="295" :id="card.id[0]+'-card-front'" class="card-front"></canvas>
+            <div class="card-shine" :id="card.id[0]+'-card-shine'"></div>
+            <div :class="'sa-position sa-1 s'+card.quality" :id="card.id[0]+'-spin'"></div>
+            <div :class="'sa-position sa-2 s'+card.quality" :id="card.id[0]+'-spin'"></div>
+            <div :class="'sa-position sa-3 s'+card.quality" :id="card.id[0]+'-spin'"></div>
+            <div :class="'sa-position sa-4 s'+card.quality" :id="card.id[0]+'-spin'"></div>
+          </div>
         </div>
+      </div>
     </div>
     <div class="mb-4 text-center">
       Steem Block Number
@@ -87,7 +74,7 @@
           block: null,
           tx_id: null,
           cards: [],
-          hash:null,
+          hash: null,
           loading: null,
           result: {}
         },
@@ -107,299 +94,299 @@
               client.database.getTransaction({ block_num: self.block, id: self.tx_id }).then(function (tx) {
                 drugwars_card_generator.random.checkseed(block, tx, self.hash, function (seed) {
                   self.cards = drugwars_card_generator.pack.forge(seed)
-                  let timer =1000;
-                    self.cards.forEach(card => {
-                      setTimeout(() => {
-                  var c = document.getElementById(card.id[0] + '-card');
-                  var b = document.getElementById(card.id[0] + '-card-back');
+                  let timer = 300;
+                  self.cards.forEach(card => {
+                    setTimeout(() => {
+                      var c = document.getElementById(card.id[0] + '-card');
+                      var b = document.getElementById(card.id[0] + '-card-back');
 
-                  let canvas = document.getElementById(card.id[0] + '-card-front'),
-                  ctx = canvas.getContext('2d');
-                  const background = new Image();
-                  const attack_type = new Image();
-                  const frame = new Image();
-                  const character = new Image();
-                  const border = new Image();
-                  const flag = new Image();
-                  const effect = new Image();
-                  background.src = `https://img.drugwars.io/cards/background/1.png`;
-                  background.onload = () => {
-                    frame.src = `https://img.drugwars.io/cards/background/1.png`;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-                  };
-
-                  frame.onload = () => {
-                    character.src = `https://img.drugwars.io/cards/heroes/${card.hero.name}.png`;
-
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
-                  };
-                  character.onload = () => {
-                    effect.src = `https://img.drugwars.io/cards/fx/${card.quality}.png`;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.drawImage(character, 0, 0, canvas.width, canvas.height);
-                  };
-
-                  effect.onload = () => {
-                    attack_type.src = `https://img.drugwars.io/cards/attack_type/${card.attack_type}.png`;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.drawImage(effect, 0, 0, canvas.width, canvas.height);
-                  };
-
-                  attack_type.onload = () => {
-                    flag.src = `https://img.drugwars.io/flags/${card.hero.flag}.png`;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.drawImage(attack_type, 20, 10, 40 ,40);
-                  };
-
-                  flag.onload = () => {
-                    // attack_type.src = `./icons/${card.attack_type}.png`;
-                    ctx.imageSmoothingEnabled = true;
-                    ctx.drawImage(flag, 20, 115,20,12);
-                    const yellowgradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-                    yellowgradient.addColorStop('0', '#e6ac00');
-                    yellowgradient.addColorStop('0.5', '#ffca31');
-                    yellowgradient.addColorStop('1.0', '#fbbd08');
-                    ctx.fillStyle = yellowgradient;
-                    ctx.textAlign = 'left';
-                    ctx.strokeStyle = 'black';
-
-                    ctx.textAlign = 'left';
-                    ctx.fillStyle = yellowgradient;
-                    ctx.shadowColor = 'rgba(0,0,0,1)';
-                    ctx.shadowBlur = 3;
-                    ctx.fillStyle = '#fff';
-                    ctx.font = '10px Legend';
-                    let qualityname ='';
-                    switch (card.quality) {
-                      case 1:
-                        qualityname = 'MYTHICAL'
-                        break;
-                      case 2:
-                        qualityname = 'LEGENDARY'
-                        break;
-                      case 3:
-                        qualityname = 'EPIC'
-                        break;
-                      case 4:
-                        qualityname = 'RARE'
-                        break;      
-                      default:
-                        qualityname = 'COMMON'
-                        break;
-                    }
-                    ctx.fillText(qualityname, 20, 140);
-                    ctx.font = '16px American Captain';
-                    ctx.fillStyle = '#000';
-                    self.wrapText(ctx,  card.prefixe + ' ' + card.hero.name +' '+ card.suffixe, 21, 163, canvas.width - 50, 16);
-                    ctx.fillStyle = yellowgradient;
-                    self.wrapText(ctx,  card.prefixe + ' ' + card.hero.name +' '+ card.suffixe, 20, 162, canvas.width - 50, 16);
-
-                    //DRAW attributes TOP
-                    ctx.textAlign = 'center';
-            ctx.font = '7px American Captain';
-            ctx.fillStyle = yellowgradient;
-            ctx.fillText('ATTACK', 190, 186);
-            ctx.font = '12px American Captain';
-            ctx.fillStyle = '#fff';
-            ctx.fillText(card.attack, 190, 198);
-
-            ctx.font = '7px American Captain';
-            ctx.fillStyle = yellowgradient;
-            ctx.fillText('HEALTH', 190, 210);
-            ctx.font = '12px American Captain';
-            ctx.fillStyle = '#fff';
-            ctx.fillText(card.health, 190, 222);
-
-            ctx.font = '7px American Captain';
-            ctx.fillStyle = yellowgradient;
-            ctx.fillText('SPEED', 190, 234);
-            ctx.font = '12px American Captain';
-            ctx.fillStyle = '#fff';
-            ctx.fillText(card.speed, 190, 246);
-
-            ctx.font = '7px American Captain';
-            ctx.fillStyle = yellowgradient;
-            ctx.fillText('CARRY', 190, 258);
-            ctx.font = '12px American Captain';
-            ctx.fillStyle = '#fff';
-            ctx.fillText(card.carry, 190, 270);
+                      let canvas = document.getElementById(card.id[0] + '-card-front'),
+                        ctx = canvas.getContext('2d');
+                      const background = new Image();
+                      const attack_type = new Image();
+                      const frame = new Image();
+                      const character = new Image();
+                      const border = new Image();
+                      const flag = new Image();
+                      const effect = new Image();
+                      background.src = `https://img.drugwars.io/cards/heroesbkg/${card.quality}.png`;
+                      background.onload = () => {
+                        character.src = `https://img.drugwars.io/cards/heroes/${card.hero.name}.png`;
 
 
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+                      };
 
-                    //DRAW attributes BOTTOM
+                      // frame.onload = () => {
 
-                    ctx.textAlign = 'center';
-                    ctx.font = '10px American Captain';
-                    ctx.fillStyle = yellowgradient;
-                    ctx.fillText('PHYSICAL', 35, 265);
-                    ctx.font = '14px American Captain';
-                    ctx.fillStyle = '#fff';
-                    ctx.fillText(card.res_physical, 35, 280);
+                      //   ctx.imageSmoothingEnabled = true;
+                      //   ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+                      // };
+                      character.onload = () => {
+                        effect.src = `https://img.drugwars.io/cards/fx/${card.quality}.png`;
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.drawImage(character, 0, 0, canvas.width, canvas.height);
+                      };
 
-                    ctx.font = '10px American Captain';
-                    ctx.fillStyle = yellowgradient;
-                    ctx.fillText('WEAPON', 80, 265);
-                    ctx.font = '14px American Captain';
-                    ctx.fillStyle = '#fff';
-                    ctx.fillText(card.res_weapon, 80, 280);
+                      effect.onload = () => {
+                        attack_type.src = `https://img.drugwars.io/cards/attack_type/${card.attack_type}.png`;
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.drawImage(effect, 0, 0, canvas.width, canvas.height);
+                      };
 
-                    ctx.font = '10px American Captain';
-                    ctx.fillStyle = yellowgradient;
-                    ctx.fillText('FIRE', 115, 265);
-                    ctx.font = '14px American Captain';
-                    ctx.fillStyle = '#fff';
-                    ctx.fillText(card.res_fire, 115, 280);
+                      attack_type.onload = () => {
+                        flag.src = `https://img.drugwars.io/flags/${card.hero.flag}.png`;
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.drawImage(attack_type, 20, 10, 40, 40);
+                      };
 
-                    ctx.font = '10px American Captain';
-                    ctx.fillStyle = yellowgradient;
-                    ctx.fillText('CHEMICAL', 150, 265);
-                    ctx.font = '14px American Captain';
-                    ctx.fillStyle = '#fff';
-                    ctx.fillText(card.res_chemical, 150, 280);
+                      flag.onload = () => {
+                        // attack_type.src = `./icons/${card.attack_type}.png`;
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.drawImage(flag, 20, 115, 20, 12);
+                        const yellowgradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                        yellowgradient.addColorStop('0', '#e6ac00');
+                        yellowgradient.addColorStop('0.5', '#ffca31');
+                        yellowgradient.addColorStop('1.0', '#fbbd08');
+                        ctx.fillStyle = yellowgradient;
+                        ctx.textAlign = 'left';
+                        ctx.strokeStyle = 'black';
 
-                    //DRAW NAME
-                    ctx.textAlign = 'left';
-                    ctx.fillStyle = yellowgradient;
-                    ctx.shadowColor = 'rgba(0,0,0,1)';
-                    ctx.shadowBlur = 3;
-                    ctx.font = '13px American Captain';
-                    ctx.fillStyle = '#000';
+                        ctx.textAlign = 'left';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.shadowColor = 'rgba(0,0,0,1)';
+                        ctx.shadowBlur = 3;
+                        ctx.fillStyle = '#fff';
+                        ctx.font = '10px Legend';
+                        let qualityname = '';
+                        switch (card.quality) {
+                          case 1:
+                            qualityname = 'MYTHICAL'
+                            break;
+                          case 2:
+                            qualityname = 'LEGENDARY'
+                            break;
+                          case 3:
+                            qualityname = 'EPIC'
+                            break;
+                          case 4:
+                            qualityname = 'RARE'
+                            break;
+                          default:
+                            qualityname = 'COMMON'
+                            break;
+                        }
+                        ctx.fillText(qualityname, 20, 140);
+                        ctx.font = '16px American Captain';
+                        ctx.fillStyle = '#000';
+                        self.wrapText(ctx, card.prefixe + ' ' + card.hero.name + ' ' + card.suffixe, 21, 163, canvas.width - 50, 16);
+                        ctx.fillStyle = yellowgradient;
+                        self.wrapText(ctx, card.prefixe + ' ' + card.hero.name + ' ' + card.suffixe, 20, 162, canvas.width - 50, 16);
 
+                        //DRAW attributes TOP
+                        ctx.textAlign = 'center';
+                        ctx.font = '7px American Captain';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.fillText('ATTACK', 190, 186);
+                        ctx.font = '12px American Captain';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.attack, 190, 198);
 
-                    //DRAW SKILLS
-                    ctx.font = '10px American Captain';
-                    ctx.strokeStyle = '#000';
-                    ctx.lineWidth = '2';
-                    ctx.fillStyle = '#000';
-                    ctx.fillRect(20, 168, 38, 14);
-                    ctx.stroke();
-                    ctx.fillStyle = '#ffc508';
-                    ctx.shadowBlur = 0;
+                        ctx.font = '7px American Captain';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.fillText('HEALTH', 190, 210);
+                        ctx.font = '12px American Captain';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.health, 190, 222);
 
-                    ctx.fillText('ACTIVE', 28, 178);
-                    ctx.font = '12px Legend';
-                    ctx.shadowBlur = 3;
-                    ctx.fillStyle = '#fff';
-                    ctx.fillText(card.active_skills[0].name.toString().toUpperCase(), 64, 180);
-                    ctx.textAlign = 'left';
-                    ctx.font = '7px Helvetica';
-                    ctx.fillStyle = '#fff';
-                    ctx.shadowBlur = 3;
-                    const text_height = self.wrapText(
-                      ctx,
-                      card.active_skills[0].description.toString().toUpperCase(),
-                      20,
-                      192,
-                      canvas.width - 60,
-                      11,
-                    );
-                    console.log(text_height)
+                        ctx.font = '7px American Captain';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.fillText('SPEED', 190, 234);
+                        ctx.font = '12px American Captain';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.speed, 190, 246);
 
-                    ctx.font = '10px American Captain';
-                    ctx.strokeStyle = '#000';
-                    ctx.lineWidth = '2';
-                    ctx.fillStyle = '#000';
-                    ctx.fillRect(20, text_height + 5, 38, 14);
-                    ctx.stroke();
-                    ctx.fillStyle = '#ffc508';
-                    ctx.shadowBlur = 0;
-                    ctx.fillText('PASSIVE', 28, text_height + 15);
-                    ctx.font = '12px Legend';
-                    ctx.shadowBlur = 3;
-                    ctx.fillStyle = '#fff';
-                    ctx.fillText(card.passive_skills[0].name.toString().toUpperCase(), 64, text_height + 17);
-                    ctx.textAlign = 'left';
-                    ctx.font = '7px Helvetica';
-                    ctx.fillStyle = '#fff';
-                    ctx.shadowBlur = 3;
-                    self.wrapText(
-                      ctx,
-                      card.passive_skills[0].description.toString().toUpperCase(),
-                      20,
-                      30 + text_height,
-                      canvas.width - 60,
-                      11,
-                    );
-
-                    ctx.textAlign = 'center';
-                    ctx.font = '14px Legend';
-
-                    ctx.fillStyle = '#fff';
-                    ctx.fillText('X1'.toUpperCase(), 190, 165);
-                    self.loading = false;
-
-                    b.style.transform = 'rotateY(0deg)';
-                    c.style.transform = 'rotateY(0deg)';
-                  };
-                      }, timer+=1000);
+                        ctx.font = '7px American Captain';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.fillText('CARRY', 190, 258);
+                        ctx.font = '12px American Captain';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.carry, 190, 270);
 
 
-                });
+
+                        //DRAW attributes BOTTOM
+
+                        ctx.textAlign = 'center';
+                        ctx.font = '10px American Captain';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.fillText('PHYSICAL', 35, 265);
+                        ctx.font = '14px American Captain';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.res_physical, 35, 280);
+
+                        ctx.font = '10px American Captain';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.fillText('WEAPON', 80, 265);
+                        ctx.font = '14px American Captain';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.res_weapon, 80, 280);
+
+                        ctx.font = '10px American Captain';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.fillText('FIRE', 115, 265);
+                        ctx.font = '14px American Captain';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.res_fire, 115, 280);
+
+                        ctx.font = '10px American Captain';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.fillText('CHEMICAL', 150, 265);
+                        ctx.font = '14px American Captain';
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.res_chemical, 150, 280);
+
+                        //DRAW NAME
+                        ctx.textAlign = 'left';
+                        ctx.fillStyle = yellowgradient;
+                        ctx.shadowColor = 'rgba(0,0,0,1)';
+                        ctx.shadowBlur = 3;
+                        ctx.font = '13px American Captain';
+                        ctx.fillStyle = '#000';
+
+
+                        //DRAW SKILLS
+                        ctx.font = '10px American Captain';
+                        ctx.strokeStyle = '#000';
+                        ctx.lineWidth = '2';
+                        ctx.fillStyle = '#000';
+                        ctx.fillRect(20, 168, 38, 14);
+                        ctx.stroke();
+                        ctx.fillStyle = '#ffc508';
+                        ctx.shadowBlur = 0;
+
+                        ctx.fillText('ACTIVE', 28, 178);
+                        ctx.font = '12px Legend';
+                        ctx.shadowBlur = 3;
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.active_skills[0].name.toString().toUpperCase(), 64, 180);
+                        ctx.textAlign = 'left';
+                        ctx.font = '7px Helvetica';
+                        ctx.fillStyle = '#fff';
+                        ctx.shadowBlur = 3;
+                        const text_height = self.wrapText(
+                          ctx,
+                          card.active_skills[0].description.toString().toUpperCase(),
+                          20,
+                          192,
+                          canvas.width - 60,
+                          11,
+                        );
+                        console.log(text_height)
+
+                        ctx.font = '10px American Captain';
+                        ctx.strokeStyle = '#000';
+                        ctx.lineWidth = '2';
+                        ctx.fillStyle = '#000';
+                        ctx.fillRect(20, text_height + 5, 38, 14);
+                        ctx.stroke();
+                        ctx.fillStyle = '#ffc508';
+                        ctx.shadowBlur = 0;
+                        ctx.fillText('PASSIVE', 28, text_height + 15);
+                        ctx.font = '12px Legend';
+                        ctx.shadowBlur = 3;
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText(card.passive_skills[0].name.toString().toUpperCase(), 64, text_height + 17);
+                        ctx.textAlign = 'left';
+                        ctx.font = '7px Helvetica';
+                        ctx.fillStyle = '#fff';
+                        ctx.shadowBlur = 3;
+                        self.wrapText(
+                          ctx,
+                          card.passive_skills[0].description.toString().toUpperCase(),
+                          20,
+                          30 + text_height,
+                          canvas.width - 60,
+                          11,
+                        );
+
+                        ctx.textAlign = 'center';
+                        ctx.font = '14px Legend';
+
+                        ctx.fillStyle = '#fff';
+                        ctx.fillText('X1'.toUpperCase(), 190, 165);
+                        self.loading = false;
+
+                        b.style.transform = 'rotateY(0deg)';
+                        c.style.transform = 'rotateY(0deg)';
+                      };
+                    }, timer += 100);
+
+
+                  });
 
                 })
               })
             })
           },
           wrapText(context, text, x, y, maxWidth, lineHeight) {
-              const words = text.split(' ');
-              let line = '';
-              for (let n = 0; n < words.length; n++) {
-                const testLine = `${line + words[n]} `;
-                const metrics = context.measureText(testLine);
-                const testWidth = metrics.width;
-                if (testWidth > maxWidth) {
-                  context.fillText(line, x, y);
-                  line = `${words[n]} `;
-                  y += lineHeight;
-                } else {
-                  line = testLine;
-                }
+            const words = text.split(' ');
+            let line = '';
+            for (let n = 0; n < words.length; n++) {
+              const testLine = `${line + words[n]} `;
+              const metrics = context.measureText(testLine);
+              const testWidth = metrics.width;
+              if (testWidth > maxWidth) {
+                context.fillText(line, x, y);
+                line = `${words[n]} `;
+                y += lineHeight;
+              } else {
+                line = testLine;
               }
-              context.fillText(line, x, y);
-              return y;
-            },
-            showDetails: function() {
-              this.details = true;
-            },
-            clickCard: function(card) {
-              var c = document.getElementById(card.id[0] + '-card');
-              var b = document.getElementById(card.id[0] + '-card-back');
-              var f = document.getElementById(card.id[0] + '-card-front');
-              var s = document.getElementById(card.id[0] + '-card-shine');
-              var t = document.querySelectorAll('#'+card.id[0] + '-spin');
-              t.forEach(element => {
-                element.style.visibility = 'visible';
-              });
-             
-              c.style.boxShadow = 'none';
-              c.style.backgroundColor = 'transparent';
-              c.style.animationName = 'none';
-              c.style.transform = 'scale(1,1)';
-              b.style.animation = 'cardback 0.15s';
-              b.style.transform = 'rotateY(90deg)';
-              var shining = ``;
-              setTimeout(function() {
-                setTimeout(function() {
-                  // s.fadeIn()
-                  c.append(shining);
-                }, 302),
-                  (f.style.display = 'block');
-                b.style.display = 'none';
-              }, 150);
-              f.style.animation = 'cardfront 0.3s';
-              f.style.transform = 'rotateY(0deg)';
-            },
+            }
+            context.fillText(line, x, y);
+            return y;
+          },
+          showDetails: function () {
+            this.details = true;
+          },
+          clickCard: function (card) {
+            var c = document.getElementById(card.id[0] + '-card');
+            var b = document.getElementById(card.id[0] + '-card-back');
+            var f = document.getElementById(card.id[0] + '-card-front');
+            var s = document.getElementById(card.id[0] + '-card-shine');
+            var t = document.querySelectorAll('#' + card.id[0] + '-spin');
+            t.forEach(element => {
+              element.style.visibility = 'visible';
+            });
+
+            c.style.boxShadow = 'none';
+            c.style.backgroundColor = 'transparent';
+            c.style.animationName = 'none';
+            c.style.transform = 'scale(1,1)';
+            b.style.animation = 'cardback 0.15s';
+            b.style.transform = 'rotateY(90deg)';
+            var shining = ``;
+            setTimeout(function () {
+              setTimeout(function () {
+                // s.fadeIn()
+                c.append(shining);
+              }, 302),
+                (f.style.display = 'block');
+              b.style.display = 'none';
+            }, 150);
+            f.style.animation = 'cardfront 0.3s';
+            f.style.transform = 'rotateY(0deg)';
+          },
         }
       });
     };
   </script>
-    <style type="text/css">
-
-      body{
+  <style type="text/css">
+    body {
       background: rgb(8, 8, 8);
-      color:white;
+      color: white;
     }
 
     #main {
@@ -414,410 +401,496 @@
     }
 
 
-      .ac {
-        font-family: 'American Captain', Verdana, Tahoma;
+    .ac {
+      font-family: 'American Captain', Verdana, Tahoma;
+    }
+
+    .le {
+      font-family: 'Legend', Verdana, Tahoma;
+    }
+
+    .card {
+      border: 0px;
+      border-radius: 20px !important;
+    }
+
+    .cards {
+      background-color: transparent;
+      font-family: 'American Captain', Verdana, Tahoma;
+    }
+
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    .minip {
+      width: 24px;
+    }
+
+    .result {
+      background-color: black;
+      border-radius: 5px;
+      border: 2px solid #ffc400;
+    }
+
+    .unitname {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+
+    input {
+      min-height: 16px !important;
+      padding: 0px 8px !important;
+    }
+
+
+
+    @keyframes cardback {
+      from {
+        transform: rotateY(0);
       }
 
-      .le {
-        font-family: 'Legend', Verdana, Tahoma;
+      to {
+        transform: rotateY(90deg);
+      }
+    }
+
+    @keyframes cardfront {
+      from {
+        transform: rotateY(90deg);
       }
 
-      .card {
-        border: 0px;
-        border-radius: 20px!important;
+      to {
+        transform: rotateY(0);
+      }
+    }
+
+    @keyframes cardshake {
+      from {
+        transform: translate(-0.6px, -0.6px);
       }
 
-      .cards {
-        background-color: transparent;
-        font-family: 'American Captain', Verdana, Tahoma;
+      0% {
+        transform: translate(0.6px, 0.6px);
       }
 
-      .uppercase {
-        text-transform: uppercase;
+      20% {
+        transform: translate(-0.6px, -20px);
       }
 
-      .minip {
-        width: 24px;
+      40% {
+        transform: translate(0.6px, -0.6px);
       }
 
-      .result {
-        background-color: black;
-        border-radius: 5px;
-        border: 2px solid #ffc400;
+      60% {
+        transform: translate(-0.6px, 0.6px);
       }
 
-      .unitname {
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        text-align: center;
+      80% {
+        transform: translate(0.6px, -0.6px);
       }
 
-
-      input {
-        min-height: 16px !important;
-        padding: 0px 8px !important;
+      100% {
+        transform: translate(-0.6px, -0.6px);
       }
 
-      
+      to {
+        transform: translate(0, 0);
+      }
+    }
 
-      @keyframes cardback {
-        from {
-          transform: rotateY(0);
-        }
-        to {
-          transform: rotateY(90deg);
-        }
-      }
-      @keyframes cardfront {
-        from {
-          transform: rotateY(90deg);
-        }
-        to {
-          transform: rotateY(0);
-        }
-      }
-      @keyframes cardshake {
-        from {
-          transform: translate(-0.6px, -0.6px);
-        }
-        0% {
-          transform: translate(0.6px, 0.6px);
-        }
-        20% {
-          transform: translate(-0.6px, 0);
-        }
-        40% {
-          transform: translate(0.6px, -0.6px);
-        }
-        60% {
-          transform: translate(-0.6px, 0.6px);
-        }
-        80% {
-          transform: translate(0.6px, -0.6px);
-        }
-        100% {
-          transform: translate(-0.6px, -0.6px);
-        }
-        to {
-          transform: translate(0, 0);
-        }
-      }
-      @keyframes hoverscale {
-        from {
-          transform: translate(0);
-        }
-        to {
-          transform: translate(1.6);
-        }
+    @keyframes hoverscale {
+      from {
+        transform: translate(0);
       }
 
-      @-moz-keyframes spin0 {
-        to {
-          transform: rotateZ(0deg);
-        }
-        from {
-          transform: rotateZ(360deg);
-        }
+      to {
+        transform: translate(1.6);
       }
-      @-webkit-keyframes spin0 {
-        to {
-          transform: rotateZ(0deg);
-        }
-        from {
-          transform: rotateZ(360deg);
-        }
-      }
-      @keyframes spin0 {
-        to {
-          transform: rotateZ(0deg);
-        }
-        from {
-          transform: rotateZ(360deg);
-        }
-      }
-      @-moz-keyframes spin1 {
-        to {
-          transform: rotateZ(45deg);
-        }
-        from {
-          transform: rotateZ(405deg);
-        }
-      }
-      @-webkit-keyframes spin1 {
-        to {
-          transform: rotateZ(45deg);
-        }
-        from {
-          transform: rotateZ(405deg);
-        }
-      }
-      @keyframes spin1 {
-        to {
-          transform: rotateZ(45deg);
-        }
-        from {
-          transform: rotateZ(405deg);
-        }
-      }
-      @-moz-keyframes spin2 {
-        to {
-          transform: rotateZ(90deg);
-        }
-        from {
-          transform: rotateZ(450deg);
-        }
-      }
-      @-webkit-keyframes spin2 {
-        to {
-          transform: rotateZ(90deg);
-        }
-        from {
-          transform: rotateZ(450deg);
-        }
-      }
-      @keyframes spin2 {
-        to {
-          transform: rotateZ(90deg);
-        }
-        from {
-          transform: rotateZ(450deg);
-        }
-      }
-      @-moz-keyframes spin3 {
-        to {
-          transform: rotateZ(135deg);
-        }
-        from {
-          transform: rotateZ(495deg);
-        }
-      }
-      @-webkit-keyframes spin3 {
-        to {
-          transform: rotateZ(135deg);
-        }
-        from {
-          transform: rotateZ(495deg);
-        }
-      }
-      @keyframes spin3 {
-        to {
-          transform: rotateZ(135deg);
-        }
-        from {
-          transform: rotateZ(495deg);
-        }
-      }
-      @-moz-keyframes spin4 {
-        to {
-          transform: rotateZ(180deg);
-        }
-        from {
-          transform: rotateZ(540deg);
-        }
-      }
-      @-webkit-keyframes spin4 {
-        to {
-          transform: rotateZ(180deg);
-        }
-        from {
-          transform: rotateZ(540deg);
-        }
-      }
-      @keyframes spin4 {
-        to {
-          transform: rotateZ(180deg);
-        }
-        from {
-          transform: rotateZ(540deg);
-        }
-      }
-      
+    }
 
-      .card-box {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-items: center;
-      }
-      .card-box .card {
-        position: relative;
-        height: 295px;
-        width: 220px;
-        animation-name: cardshake;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-        cursor: pointer;
-        background-color: transparent;
-        background-size: contain;
-      }
-      .q1{
-      box-shadow: 0px 0px 60px 6px rgba(8, 218, 255, 0.3)!important;
-      }
-      .q2{
-      box-shadow: 0px 0px 60px 6px rgba(255, 119, 8, 0.3)!important;
-      }
-      .q3{
-      box-shadow: 0px 0px 60px 6px rgba(226, 8, 255, 0.3)!important;
-      }
-      .q4{
-      box-shadow: 0px 0px 60px 6px rgba(66, 255, 8, 0.3)!important;
-      }
-      .q5{
-      box-shadow: 0px 0px 60px 6px rgba(255, 196, 8, 0.3)!important;
+    @-moz-keyframes spin0 {
+      to {
+        transform: rotateZ(0deg);
       }
 
-      .card-box .card .sa-1 {
-        width: 200%;
-        height: 60px;
-        transform-style: preserve-3d;
-        animation: spin1 10s linear infinite;
-        transform: rotateX(10deg) rotateZ(45deg);
+      from {
+        transform: rotateZ(360deg);
+      }
+    }
+
+    @-webkit-keyframes spin0 {
+      to {
+        transform: rotateZ(0deg);
       }
 
-      .s1{
-      background-image: radial-gradient(
-          circle at center,
+      from {
+        transform: rotateZ(360deg);
+      }
+    }
+
+    @keyframes spin0 {
+      to {
+        transform: rotateZ(0deg);
+      }
+
+      from {
+        transform: rotateZ(360deg);
+      }
+    }
+
+    @-moz-keyframes spin1 {
+      to {
+        transform: rotateZ(45deg);
+      }
+
+      from {
+        transform: rotateZ(405deg);
+      }
+    }
+
+    @-webkit-keyframes spin1 {
+      to {
+        transform: rotateZ(45deg);
+      }
+
+      from {
+        transform: rotateZ(405deg);
+      }
+    }
+
+    @keyframes spin1 {
+      to {
+        transform: rotateZ(45deg);
+      }
+
+      from {
+        transform: rotateZ(405deg);
+      }
+    }
+
+    @-moz-keyframes spin2 {
+      to {
+        transform: rotateZ(90deg);
+      }
+
+      from {
+        transform: rotateZ(450deg);
+      }
+    }
+
+    @-webkit-keyframes spin2 {
+      to {
+        transform: rotateZ(90deg);
+      }
+
+      from {
+        transform: rotateZ(450deg);
+      }
+    }
+
+    @keyframes spin2 {
+      to {
+        transform: rotateZ(90deg);
+      }
+
+      from {
+        transform: rotateZ(450deg);
+      }
+    }
+
+    @-moz-keyframes spin3 {
+      to {
+        transform: rotateZ(135deg);
+      }
+
+      from {
+        transform: rotateZ(495deg);
+      }
+    }
+
+    @-webkit-keyframes spin3 {
+      to {
+        transform: rotateZ(135deg);
+      }
+
+      from {
+        transform: rotateZ(495deg);
+      }
+    }
+
+    @keyframes spin3 {
+      to {
+        transform: rotateZ(135deg);
+      }
+
+      from {
+        transform: rotateZ(495deg);
+      }
+    }
+
+    @-moz-keyframes spin4 {
+      to {
+        transform: rotateZ(180deg);
+      }
+
+      from {
+        transform: rotateZ(540deg);
+      }
+    }
+
+    @-webkit-keyframes spin4 {
+      to {
+        transform: rotateZ(180deg);
+      }
+
+      from {
+        transform: rotateZ(540deg);
+      }
+    }
+
+    @keyframes spin4 {
+      to {
+        transform: rotateZ(180deg);
+      }
+
+      from {
+        transform: rotateZ(540deg);
+      }
+    }
+
+
+    .card-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .card-box .card {
+      position: relative;
+      height: 295px;
+      width: 220px;
+      animation-name: cardshake;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      cursor: pointer;
+      background-color: transparent;
+      background-size: contain;
+    }
+
+    .q1 {
+      box-shadow: 0px 0px 60px 6px rgba(8, 218, 255, 0.3) !important;
+    }
+
+    .q2 {
+      box-shadow: 0px 0px 60px 6px rgba(255, 119, 8, 0.3) !important;
+    }
+
+    .q3 {
+      box-shadow: 0px 0px 60px 6px rgba(226, 8, 255, 0.3) !important;
+    }
+
+    .q4 {
+      box-shadow: 0px 0px 60px 6px rgba(66, 255, 8, 0.3) !important;
+    }
+
+    .q5 {
+      box-shadow: 0px 0px 60px 6px rgba(255, 196, 8, 0.3) !important;
+    }
+
+    .card-box .card .sa-1 {
+      width: 200%;
+      height: 60px;
+      transform-style: preserve-3d;
+      animation: spin1 10s linear infinite;
+      transform: rotateX(10deg) rotateZ(45deg);
+    }
+
+    .s1 {
+      background-image: radial-gradient(circle at center,
           rgba(27, 255, 217, 0),
           rgba(27, 255, 236, 0.2) 35%,
           rgba(27, 240, 255, 0.05) 50%,
           rgba(27, 255, 225, 0.025) 65%,
           rgba(27, 255, 187, 0) 80%,
           rgba(27, 247, 255, 0) 90%,
-          rgba(27, 255, 244, 0) 100%
-        );
-      }
+          rgba(27, 255, 244, 0) 100%);
+    }
 
-      .s2{
-      background-image: radial-gradient(
-          circle at center,
+    .s2 {
+      background-image: radial-gradient(circle at center,
           rgba(255, 164, 27, 0),
           rgba(255, 175, 27, 0.2) 35%,
           rgba(255, 175, 27, 0.05) 50%,
           rgba(255, 164, 27, 0.025) 65%,
           rgba(255, 156, 27, 0) 80%,
           rgba(255, 156, 27, 0) 90%,
-          rgba(255, 149, 27, 0) 100%
-        );
-      }
+          rgba(255, 149, 27, 0) 100%);
+    }
 
-      .s3{
-      background-image: radial-gradient(
-          circle at center,
+    .s3 {
+      background-image: radial-gradient(circle at center,
           rgba(255, 27, 255, 0),
           rgba(255, 27, 236, 0.2) 35%,
           rgba(236, 27, 255, 0.05) 50%,
           rgba(255, 27, 255, 0.025) 65%,
           rgba(255, 27, 244, 0) 80%,
           rgba(255, 27, 236, 0) 90%,
-          rgba(255, 27, 244, 0) 100%
-        );
-      }
+          rgba(255, 27, 244, 0) 100%);
+    }
 
-      .s4{
-      background-image: radial-gradient(
-          circle at center,
+    .s4 {
+      background-image: radial-gradient(circle at center,
           rgba(92, 255, 27, 0),
           rgba(65, 255, 27, 0.2) 35%,
           rgba(92, 255, 27, 0.05) 50%,
           rgba(73, 255, 27, 0.025) 65%,
           rgba(54, 255, 27, 0) 80%,
           rgba(73, 255, 27, 0) 90%,
-          rgba(99, 255, 27, 0) 100%
-        );
-      }
-      
-      .s5{
-      background-image: radial-gradient(
-          circle at center,
+          rgba(99, 255, 27, 0) 100%);
+    }
+
+    .s5 {
+      background-image: radial-gradient(circle at center,
           rgba(255, 177, 27, 0),
           rgba(255, 177, 27, 0.2) 35%,
           rgba(255, 177, 27, 0.05) 50%,
           rgba(255, 177, 27, 0.025) 65%,
           rgba(255, 177, 27, 0) 80%,
           rgba(255, 177, 27, 0) 90%,
-          rgba(255, 177, 27, 0) 100%
-        );
+          rgba(255, 177, 27, 0) 100%);
+    }
+
+    .card-box .card:hover {
+      animation-name: hoverscale;
+      animation-duration: 0.5s;
+      animation-iteration-count: 1;
+      transform: scale(1.21, 1.1);
+    }
+
+    .card-box .card:nth-of-type(1) {
+      animation-duration: 2.15s;
+    }
+
+    .card-box .card:nth-of-type(2) {
+      animation-duration: 2.35s;
+    }
+
+    .card-box .card:nth-of-type(3) {
+      animation-duration: 2.55s;
+    }
+
+    .card-box .card:nth-of-type(4) {
+      animation-duration: 1.95s;
+    }
+
+    .card-box .card:nth-of-type(5) {
+      animation-duration: 2.45s;
+    }
+
+    .card-box .card .card-back {
+      display: block;
+      height: 100%;
+      width: auto;
+      animation-name: bounceIn;
+      animation-duration: 450ms;
+      animation-timing-function: ease-in;
+      animation-fill-mode: backwards;
+    }
+
+
+    .card-box .card .card-front {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+      border-radius: 20px;
+
+      height: 100%;
+      width: auto;
+      transform: rotateY(180deg);
+      z-index: 1;
+    }
+
+    .card-box .card .card-shine {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      width: 100px;
+      height: 100px;
+
+      box-shadow: 0px 0px 180px 60px rgba(255, 196, 6, 0.3);
+      z-index: 0.5;
+    }
+
+    .card-box .card .sa-position {
+      visibility: hidden;
+      position: absolute;
+      top: 30%;
+      left: -50%;
+      z-index: 0, 5;
+    }
+
+    .card-box .card .sa-2 {
+      width: 200%;
+      height: 60px;
+      transform-style: preserve-3d;
+      animation: spin2 10s linear infinite;
+      transform: rotateX(10deg) rotateZ(90deg);
+    }
+
+    .card-box .card .sa-3 {
+      width: 200%;
+      height: 60px;
+      transform-style: preserve-3d;
+      animation: spin3 10s linear infinite;
+      transform: rotateX(10deg) rotateZ(135deg);
+    }
+
+    .card-box .card .sa-4 {
+      width: 200%;
+      height: 60px;
+      transform-style: preserve-3d;
+      animation: spin4 10s linear infinite;
+      transform: rotateX(10deg) rotateZ(180deg);
+    }
+
+    .card-box .card .sa-5 {
+      width: 200%;
+      height: 60px;
+      transform-style: preserve-3d;
+      animation: spin4 10s linear infinite;
+      transform: rotateX(10deg) rotateZ(135deg);
+    }
+
+    @keyframes bounceIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) translate3d(0, 0, 0);
       }
 
-      .card-box .card:hover {
-        animation-name: hoverscale;
-        animation-duration: 0.3s;
-        animation-iteration-count: 1;
-        transform: scale(1.1, 1.1);
-      }
-      .card-box .card:nth-of-type(1) {
-        animation-duration: 2.15s;
-      }
-      .card-box .card:nth-of-type(2) {
-        animation-duration: 2.35s;
-      }
-      .card-box .card:nth-of-type(3) {
-        animation-duration: 2.55s;
-      }
-      .card-box .card:nth-of-type(4) {
-        animation-duration: 1.95s;
-      }
-      .card-box .card .card-back {
-        display: block;
-        height: 100%;
-        width: auto;
-      }
-      .card-box .card .card-front {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: none;
-        border-radius: 20px;
-
-        height: 100%;
-        width: auto;
-        transform: rotateY(180deg);
-        z-index: 1;
-      }
-      .card-box .card .card-shine {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: none;
-        width: 100px;
-        height: 100px;
-
-        box-shadow: 0px 0px 180px 60px rgba(255, 196, 6, 0.3);
-        z-index: 0.5;
+      50% {
+        opacity: 0.9;
+        transform: scale(1.1);
       }
 
-      .card-box .card .sa-position {
-        visibility: hidden;
-        position: absolute;
-        top: 30%;
-        left: -50%;
-        z-index: 0, 5;
+      80% {
+        opacity: 1;
+        transform: scale(0.89);
       }
 
-      .card-box .card .sa-2 {
-        width: 200%;
-        height: 60px;
-        transform-style: preserve-3d;
-        animation: spin2 10s linear infinite;
-        transform: rotateX(10deg) rotateZ(90deg);
+      100% {
+        opacity: 1;
+        transform: scale(1) translate3d(0, 0, 0);
       }
-      .card-box .card .sa-3 {
-        width: 200%;
-        height: 60px;
-        transform-style: preserve-3d;
-        animation: spin3 10s linear infinite;
-        transform: rotateX(10deg) rotateZ(135deg);
-      }
-      .card-box .card .sa-4 {
-        width: 200%;
-        height: 60px;
-        transform-style: preserve-3d;
-        animation: spin4 10s linear infinite;
-        transform: rotateX(10deg) rotateZ(180deg);
-      }
-    </style>
+    }
+  </style>
 
 </body>
 
