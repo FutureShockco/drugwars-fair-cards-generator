@@ -144,7 +144,7 @@
                       flag.onload = () => {
                         // attack_type.src = `./icons/${card.attack_type}.png`;
                         ctx.imageSmoothingEnabled = true;
-                        ctx.drawImage(flag, 20, 115, 20, 12);
+                        ctx.drawImage(flag, 20, 130, 20, 12);
                         const yellowgradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
                         yellowgradient.addColorStop('0', '#e6ac00');
                         yellowgradient.addColorStop('0.5', '#ffca31');
@@ -159,25 +159,25 @@
                         ctx.shadowBlur = 3;
                         ctx.fillStyle = '#fff';
                         ctx.font = '10px Legend';
-                        let qualityname = '';
-                        switch (card.quality) {
-                          case 1:
-                            qualityname = 'MYTHICAL'
-                            break;
-                          case 2:
-                            qualityname = 'LEGENDARY'
-                            break;
-                          case 3:
-                            qualityname = 'EPIC'
-                            break;
-                          case 4:
-                            qualityname = 'RARE'
-                            break;
-                          default:
-                            qualityname = 'COMMON'
-                            break;
-                        }
-                        ctx.fillText(qualityname, 20, 140);
+                        // let qualityname = '';
+                        // switch (card.quality) {
+                        //   case 1:
+                        //     qualityname = 'MYTHICAL'
+                        //     break;
+                        //   case 2:
+                        //     qualityname = 'LEGENDARY'
+                        //     break;
+                        //   case 3:
+                        //     qualityname = 'EPIC'
+                        //     break;
+                        //   case 4:
+                        //     qualityname = 'RARE'
+                        //     break;
+                        //   default:
+                        //     qualityname = 'COMMON'
+                        //     break;
+                        // }
+                        // ctx.fillText(qualityname, 20, 140);
                         ctx.font = '16px American Captain';
                         ctx.fillStyle = '#000';
                         self.wrapText(ctx, card.prefixe + ' ' + card.hero.name + ' ' + card.suffixe, 21, 163, canvas.width - 50, 16);
@@ -283,7 +283,6 @@
                           canvas.width - 60,
                           11,
                         );
-                        console.log(text_height)
 
                         ctx.font = '10px American Captain';
                         ctx.strokeStyle = '#000';
