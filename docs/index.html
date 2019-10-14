@@ -37,19 +37,22 @@
       </h3>
       <div class="my-4 columns px-0 text-center">
         <div class="card-box">
-          <div :id="card.hid+'-card'" @click="clickCard(card)" v-for="card in cards" :key="card.hid"
+          <div :id="card.hid+'-card'" v-if="card.hid" @click="clickCard(card)" v-for="card in cards" :key="card.hid"
             :class="'card q'+card.quality">
             <div class="card-shine" :id="card.hid+'-card-shine'"></div>
             <div :class="'sa-position sa-1 s'+card.quality" :id="card.hid+'-spin'"></div>
             <div :class="'sa-position sa-2 s'+card.quality" :id="card.hid+'-spin'"></div>
             <div :class="'sa-position sa-3 s'+card.quality" :id="card.hid+'-spin'"></div>
             <div :class="'sa-position sa-4 s'+card.quality" :id="card.hid+'-spin'"></div>
-            <img src="https://img.drugwars.io/cards/background/backside.png" alt="image host"
+            <img  src="https://img.drugwars.io/cards/background/backside.png" alt="image host"
               :id="card.hid+'-card-back'" class="card-back" />
             <div :id="card.hid+'-card-front'" class="card-front">
               <!-- <img src="https://massivepenguin.com/pens/hb3d/01_bg.png" data-depth="18" /> -->
-              <img class="layer layer0" :src="'https://img.drugwars.io/cards/heroesbkg/'+card.quality+'.png'"
-                data-depth="12" />
+              <img class="layer layer0" v-if="card.quality === 1" :src="'https://img.drugwars.io/cards/background/'+card.bg+'.png'"
+                data-depth="16" />
+              <img class="layer layer0" v-else  :src="'https://img.drugwars.io/cards/background/'+card.bg+'.gif'"
+                data-depth="16" />
+              
               <!-- <img class="layer layer1 shadowv" :src="'https://img.drugwars.io/cards/heroes/'+card.hero+'.png'"
                 data-depth="4" />
               <img class="layer layer2 shadowr" :src="'https://img.drugwars.io/cards/heroes/'+card.hero+'.png'"
@@ -153,7 +156,7 @@
           self.card = null;
           self.block = 36914171;
           self.tx_id = '14e08a969bbefee2063905ef381eb21e1a31ab62'
-          self.hash = '98ba0b7b6b72c604ecac8ad2c3d4c5ed8026d9cfe953d168b03af5dbfc3a738c52caf137371d10c7e15465cbb9f34fc559d0db13a1986817aace5761bd94f827'
+          self.hash = '98ba0b7b6b72c604ecefad2c3d4c5ed80fvd9cfe9eff10c7e15465cbbeffc559d0db13a1986817aace5761bd94f827'
           document.addEventListener(
             "mousemove",
             function (event) {
@@ -178,6 +181,9 @@
                     card.flag = drugwars.Cards.heroes[card.family].find(element => element.name === card.hero).flag
                     card.suffixe = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).suffixes[card.quality - 1].name
                     card.prefixe = drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).suffixes[card.quality - 1].name
+
+                    card.bg = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).name
+
                     card.active = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).title
                     card.active_desc = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).description
                     for (var i = 0; i < card.active_skills.values.length; i++) {
@@ -272,7 +278,7 @@
                   var myImg = images[i];
                   myImg.style =
                     "transform: perspective(550px) translateZ(" +
-                    myImg.getAttribute("data-depth") / myImg.clientHeight * 5000 +
+                    myImg.getAttribute("data-depth") / myImg.clientHeight * 2000 +
                     "px); left: " +
                     yval * myImg.getAttribute("data-depth") * -1 / 20 +
                     "%; top: " +
