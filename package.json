@@ -1,6 +1,6 @@
 {
   "name": "drugwars_card_generator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A lightweight JavaScript library for DrugWars Cards",
   "main": "src/index.js",
   "browser": "dist/drugwars_card_generator.min.js",
@@ -14,9 +14,10 @@
   },
   "dependencies": {
     "big-integer": "^1.6.46",
+    "crypto": "^1.0.1",
     "debug": "^4.1.1",
     "distributions": "^2.1.0",
-    "drugwars": "^0.1.25",
+    "drugwars": "^0.1.27",
     "hash.js": "^1.1.7",
     "mongodb": "^3.3.2",
     "nthline": "^1.0.2",

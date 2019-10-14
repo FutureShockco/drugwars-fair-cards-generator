@@ -8,6 +8,7 @@
   <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/drugwars_card_generator@1.0.0"></script>  -->
   <script src="./drugwars_card_generator.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/drugwars@0.1.27"></script>
   <script src="https://unpkg.com/dsteem@^0.8.0/dist/dsteem.js"></script>
   <style>
     @font-face {
@@ -36,16 +37,83 @@
       </h3>
       <div class="my-4 columns px-0 text-center">
         <div class="card-box">
-          <div v-for="card in cards" :class="'card q'+card.quality" :id="card.id[0]+'-card'" @click="clickCard(card)">
+          <div :id="card.hid+'-card'" @click="clickCard(card)" v-for="card in cards" :key="card.hid"
+            :class="'card q'+card.quality">
+            <div class="card-shine" :id="card.hid+'-card-shine'"></div>
+            <div :class="'sa-position sa-1 s'+card.quality" :id="card.hid+'-spin'"></div>
+            <div :class="'sa-position sa-2 s'+card.quality" :id="card.hid+'-spin'"></div>
+            <div :class="'sa-position sa-3 s'+card.quality" :id="card.hid+'-spin'"></div>
+            <div :class="'sa-position sa-4 s'+card.quality" :id="card.hid+'-spin'"></div>
             <img src="https://img.drugwars.io/cards/background/backside.png" alt="image host"
-              :id="card.id[0]+'-card-back'" class="card-back" />
-            <canvas width="220" height="295" :id="card.id[0]+'-card-front'" class="card-front"></canvas>
-            <div class="card-shine" :id="card.id[0]+'-card-shine'"></div>
-            <div :class="'sa-position sa-1 s'+card.quality" :id="card.id[0]+'-spin'"></div>
-            <div :class="'sa-position sa-2 s'+card.quality" :id="card.id[0]+'-spin'"></div>
-            <div :class="'sa-position sa-3 s'+card.quality" :id="card.id[0]+'-spin'"></div>
-            <div :class="'sa-position sa-4 s'+card.quality" :id="card.id[0]+'-spin'"></div>
+              :id="card.hid+'-card-back'" class="card-back" />
+            <div :id="card.hid+'-card-front'" class="card-front">
+              <!-- <img src="https://massivepenguin.com/pens/hb3d/01_bg.png" data-depth="18" /> -->
+              <img class="layer layer0" :src="'https://img.drugwars.io/cards/heroesbkg/'+card.quality+'.png'"
+                data-depth="12" />
+              <!-- <img class="layer layer1 shadowv" :src="'https://img.drugwars.io/cards/heroes/'+card.hero+'.png'"
+                data-depth="4" />
+              <img class="layer layer2 shadowr" :src="'https://img.drugwars.io/cards/heroes/'+card.hero+'.png'"
+                data-depth="6" /> -->
+              <!-- <img class="layer layer3" src="https://massivepenguin.com/pens/hb3d/04_mist.png" data-depth="6" /> -->
+              <img class="layer layer4 " :src="'https://img.drugwars.io/cards/heroes/'+card.hero+'.png'"
+                data-depth="2" />
+              <img class="layer layer5 attack_type"
+                :src="'https://img.drugwars.io/cards/attack_type/'+card.attack_type+'.png'" data-depth="0" />
+              <img class="layer layer7" :src="'https://img.drugwars.io/cards/frames/black.png'" data-depth="0" />
+              <img class="layer layer8" :src="'https://img.drugwars.io/cards/fx/'+card.quality+'.png'" data-depth="0" />
+              <div class="text layer9" data-depth="0">
+                <img class="flag" :src="'https://img.drugwars.io/flags/'+card.flag+'.png'" />
+                <div class="name">
+                  {{card.prefixe}} {{card.hero}} {{card.suffixe}}
+                </div>
+                <span class="skill">
+                  ACTIVE
+                </span>
+                <span class="skill_name">{{card.active}}</span>
+                <div class="skill_desc" v-html="card.active_desc">
+                </div>
+                <span class="skill">
+                  PASSIVE
+                </span>
+                <span class="skill_name">{{card.passive}}</span>
+                <div class="skill_desc" v-html="card.passive_desc">
+                </div>
+              </div>
+              <div class="properties layer10" data-depth="0">
+                <div class="level mb-3">
+                  X1
+                </div>
+                <span class="skill">
+                    ATTACK
+                </span>
+                <div class="skill_name">{{card.attack}}</div>
+                <span class="skill">
+                    HEALTH
+                </span>
+                <div class="skill_name">{{card.health}}</div>
+                <span class="skill">
+                    SPEED
+                </span>
+                <div class="skill_name">{{card.speed}}</div>
+                <span class="skill">
+                    CARRY
+                </span>
+                <div class="skill_name">{{card.carry}}</div>
+              </div>
+            </div>
           </div>
+
+
+          <!-- <div v-for="card in cards" :class="'card q'+card.quality" :id="card.hid+card.quality+'-card'" @click="clickCard(card)">
+            <img src="https://img.drugwars.io/cards/background/backside.png" alt="image host"
+              :id="card.hid+card.quality+'-card-back'" class="card-back" />
+            <canvas width="220" height="295" :id="card.hid+card.quality+'-card-front'" class="card-front"></canvas>
+            <div class="card-shine" :id="card.hid+card.quality+'-card-shine'"></div>
+            <div :class="'sa-position sa-1 s'+card.quality" :id="card.hid+card.quality+'-spin'"></div>
+            <div :class="'sa-position sa-2 s'+card.quality" :id="card.hid+card.quality+'-spin'"></div>
+            <div :class="'sa-position sa-3 s'+card.quality" :id="card.hid+card.quality+'-spin'"></div>
+            <div :class="'sa-position sa-4 s'+card.quality" :id="card.hid+card.quality+'-spin'"></div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -76,6 +144,8 @@
           cards: [],
           hash: null,
           loading: null,
+          animate: false,
+          count: 0,
           result: {}
         },
         mounted() {
@@ -84,247 +154,44 @@
           self.block = 36914171;
           self.tx_id = '14e08a969bbefee2063905ef381eb21e1a31ab62'
           self.hash = '98ba0b7b6b72c604ecac8ad2c3d4c5ed8026d9cfe953d168b03af5dbfc3a738c52caf137371d10c7e15465cbb9f34fc559d0db13a1986817aace5761bd94f827'
+          document.addEventListener(
+            "mousemove",
+            function (event) {
+              self.rotate(event);
+            },
+            false
+          );
         },
         methods: {
           handleSubmit: function () {
             const self = this;
+            self.count = 0;
             self.cards = [];
             var client = new dsteem.Client('https://api.steemit.com')
             client.database.getBlock(self.block).then(function (block) {
               client.database.getTransaction({ block_num: self.block, id: self.tx_id }).then(function (tx) {
                 drugwars_card_generator.random.checkseed(block, tx, self.hash, function (seed) {
-                  self.cards = drugwars_card_generator.pack.forge(seed)
+                  let newpack = drugwars_card_generator.pack.forge(seed)
                   let timer = 300;
-                  self.cards.forEach(card => {
-                    setTimeout(() => {
-                      var c = document.getElementById(card.id[0] + '-card');
-                      var b = document.getElementById(card.id[0] + '-card-back');
-
-                      let canvas = document.getElementById(card.id[0] + '-card-front'),
-                        ctx = canvas.getContext('2d');
-                      const background = new Image();
-                      const attack_type = new Image();
-                      const frame = new Image();
-                      const character = new Image();
-                      const border = new Image();
-                      const flag = new Image();
-                      const effect = new Image();
-                      background.src = `https://img.drugwars.io/cards/heroesbkg/${card.quality}.png`;
-                      background.onload = () => {
-                        character.src = `https://img.drugwars.io/cards/heroes/${card.hero.name}.png`;
-
-
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-                      };
-
-                      // frame.onload = () => {
-
-                      //   ctx.imageSmoothingEnabled = true;
-                      //   ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
-                      // };
-                      character.onload = () => {
-                        effect.src = `https://img.drugwars.io/cards/fx/${card.quality}.png`;
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.drawImage(character, 0, 0, canvas.width, canvas.height);
-                      };
-
-                      effect.onload = () => {
-                        attack_type.src = `https://img.drugwars.io/cards/attack_type/${card.attack_type}.png`;
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.drawImage(effect, 0, 0, canvas.width, canvas.height);
-                      };
-
-                      attack_type.onload = () => {
-                        flag.src = `https://img.drugwars.io/flags/${card.hero.flag}.png`;
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.drawImage(attack_type, 20, 10, 40, 40);
-                      };
-
-                      flag.onload = () => {
-                        // attack_type.src = `./icons/${card.attack_type}.png`;
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.drawImage(flag, 20, 130, 20, 12);
-                        const yellowgradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-                        yellowgradient.addColorStop('0', '#e6ac00');
-                        yellowgradient.addColorStop('0.5', '#ffca31');
-                        yellowgradient.addColorStop('1.0', '#fbbd08');
-                        ctx.fillStyle = yellowgradient;
-                        ctx.textAlign = 'left';
-                        ctx.strokeStyle = 'black';
-
-                        ctx.textAlign = 'left';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.shadowColor = 'rgba(0,0,0,1)';
-                        ctx.shadowBlur = 3;
-                        ctx.fillStyle = '#fff';
-                        ctx.font = '10px Legend';
-                        // let qualityname = '';
-                        // switch (card.quality) {
-                        //   case 1:
-                        //     qualityname = 'MYTHICAL'
-                        //     break;
-                        //   case 2:
-                        //     qualityname = 'LEGENDARY'
-                        //     break;
-                        //   case 3:
-                        //     qualityname = 'EPIC'
-                        //     break;
-                        //   case 4:
-                        //     qualityname = 'RARE'
-                        //     break;
-                        //   default:
-                        //     qualityname = 'COMMON'
-                        //     break;
-                        // }
-                        // ctx.fillText(qualityname, 20, 140);
-                        ctx.font = '16px American Captain';
-                        ctx.fillStyle = '#000';
-                        self.wrapText(ctx, card.prefixe + ' ' + card.hero.name + ' ' + card.suffixe, 21, 163, canvas.width - 50, 16);
-                        ctx.fillStyle = yellowgradient;
-                        self.wrapText(ctx, card.prefixe + ' ' + card.hero.name + ' ' + card.suffixe, 20, 162, canvas.width - 50, 16);
-
-                        //DRAW attributes TOP
-                        ctx.textAlign = 'center';
-                        ctx.font = '7px American Captain';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.fillText('ATTACK', 190, 186);
-                        ctx.font = '12px American Captain';
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.attack, 190, 198);
-
-                        ctx.font = '7px American Captain';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.fillText('HEALTH', 190, 210);
-                        ctx.font = '12px American Captain';
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.health, 190, 222);
-
-                        ctx.font = '7px American Captain';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.fillText('SPEED', 190, 234);
-                        ctx.font = '12px American Captain';
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.speed, 190, 246);
-
-                        ctx.font = '7px American Captain';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.fillText('CARRY', 190, 258);
-                        ctx.font = '12px American Captain';
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.carry, 190, 270);
-
-
-
-                        //DRAW attributes BOTTOM
-
-                        ctx.textAlign = 'center';
-                        ctx.font = '10px American Captain';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.fillText('PHYSICAL', 35, 265);
-                        ctx.font = '14px American Captain';
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.res_physical, 35, 280);
-
-                        ctx.font = '10px American Captain';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.fillText('WEAPON', 80, 265);
-                        ctx.font = '14px American Captain';
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.res_weapon, 80, 280);
-
-                        ctx.font = '10px American Captain';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.fillText('FIRE', 115, 265);
-                        ctx.font = '14px American Captain';
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.res_fire, 115, 280);
-
-                        ctx.font = '10px American Captain';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.fillText('CHEMICAL', 150, 265);
-                        ctx.font = '14px American Captain';
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.res_chemical, 150, 280);
-
-                        //DRAW NAME
-                        ctx.textAlign = 'left';
-                        ctx.fillStyle = yellowgradient;
-                        ctx.shadowColor = 'rgba(0,0,0,1)';
-                        ctx.shadowBlur = 3;
-                        ctx.font = '13px American Captain';
-                        ctx.fillStyle = '#000';
-
-
-                        //DRAW SKILLS
-                        ctx.font = '10px American Captain';
-                        ctx.strokeStyle = '#000';
-                        ctx.lineWidth = '2';
-                        ctx.fillStyle = '#000';
-                        ctx.fillRect(20, 168, 38, 14);
-                        ctx.stroke();
-                        ctx.fillStyle = '#ffc508';
-                        ctx.shadowBlur = 0;
-
-                        ctx.fillText('ACTIVE', 28, 178);
-                        ctx.font = '12px Legend';
-                        ctx.shadowBlur = 3;
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.active_skills[0].name.toString().toUpperCase(), 64, 180);
-                        ctx.textAlign = 'left';
-                        ctx.font = '7px Helvetica';
-                        ctx.fillStyle = '#fff';
-                        ctx.shadowBlur = 3;
-                        const text_height = self.wrapText(
-                          ctx,
-                          card.active_skills[0].description.toString().toUpperCase(),
-                          20,
-                          192,
-                          canvas.width - 60,
-                          11,
-                        );
-
-                        ctx.font = '10px American Captain';
-                        ctx.strokeStyle = '#000';
-                        ctx.lineWidth = '2';
-                        ctx.fillStyle = '#000';
-                        ctx.fillRect(20, text_height + 5, 38, 14);
-                        ctx.stroke();
-                        ctx.fillStyle = '#ffc508';
-                        ctx.shadowBlur = 0;
-                        ctx.fillText('PASSIVE', 28, text_height + 15);
-                        ctx.font = '12px Legend';
-                        ctx.shadowBlur = 3;
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText(card.passive_skills[0].name.toString().toUpperCase(), 64, text_height + 17);
-                        ctx.textAlign = 'left';
-                        ctx.font = '7px Helvetica';
-                        ctx.fillStyle = '#fff';
-                        ctx.shadowBlur = 3;
-                        self.wrapText(
-                          ctx,
-                          card.passive_skills[0].description.toString().toUpperCase(),
-                          20,
-                          30 + text_height,
-                          canvas.width - 60,
-                          11,
-                        );
-
-                        ctx.textAlign = 'center';
-                        ctx.font = '14px Legend';
-
-                        ctx.fillStyle = '#fff';
-                        ctx.fillText('X1'.toUpperCase(), 190, 165);
-                        self.loading = false;
-
-                        b.style.transform = 'rotateY(0deg)';
-                        c.style.transform = 'rotateY(0deg)';
-                      };
-                    }, timer += 100);
-
-
+                  newpack.forEach(card => {
+                    card.hid = card.hero + card.id.split('-')[0]
+                    card.flag = drugwars.Cards.heroes[card.family].find(element => element.name === card.hero).flag
+                    card.suffixe = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).suffixes[card.quality - 1].name
+                    card.prefixe = drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).suffixes[card.quality - 1].name
+                    card.active = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).title
+                    card.active_desc = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).description
+                    for (var i = 0; i < card.active_skills.values.length; i++) {
+                      var value = "$$value" + [i + 1] + "$$"
+                      card.active_desc = card.active_desc.replace(value, '<span style="color:red;font-weight:900;font-size: 11px;">' + card.active_skills.values[i] + '</span>');
+                    }
+                    card.passive = drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).name
+                    card.passive_desc = drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).description
+                    for (var i = 0; i < card.passive_skills.values.length; i++) {
+                      var value = "$$value" + [i + 1] + "$$"
+                      card.passive_desc = card.passive_desc.replace(value, '<span style="color:red;font-weight:900;font-size: 11px;">' + card.passive_skills.values[i] + '</span>');
+                    }
                   });
-
+                  self.cards = newpack;
                 })
               })
             })
@@ -351,21 +218,23 @@
             this.details = true;
           },
           clickCard: function (card) {
-            var c = document.getElementById(card.id[0] + '-card');
-            var b = document.getElementById(card.id[0] + '-card-back');
-            var f = document.getElementById(card.id[0] + '-card-front');
-            var s = document.getElementById(card.id[0] + '-card-shine');
-            var t = document.querySelectorAll('#' + card.id[0] + '-spin');
+            var c = document.getElementById(card.hid + '-card');
+            var b = document.getElementById(card.hid + '-card-back');
+            var f = document.getElementById(card.hid + '-card-front');
+            var s = document.getElementById(card.hid + '-card-shine');
+            var t = document.querySelectorAll('#' + card.hid + '-spin');
             t.forEach(element => {
               element.style.visibility = 'visible';
             });
-
+            if(this.count<5)
+            this.count++;
             c.style.boxShadow = 'none';
             c.style.backgroundColor = 'transparent';
             c.style.animationName = 'none';
             c.style.transform = 'scale(1,1)';
             b.style.animation = 'cardback 0.15s';
             b.style.transform = 'rotateY(90deg)';
+
             var shining = ``;
             setTimeout(function () {
               setTimeout(function () {
@@ -377,7 +246,264 @@
             }, 150);
             f.style.animation = 'cardfront 0.3s';
             f.style.transform = 'rotateY(0deg)';
+            f.style.width = "100%";
           },
+          rotate: function (event) {
+            if (!this.animate || this.count === 5) {
+              const self = this;
+              var x = event.clientX;
+              var y = event.clientY;
+              var w = window.innerWidth;
+              var h = window.innerHeight;
+              var midpointX = w / 2;
+              var midpointY = h / 2;
+              var ypos = x - midpointX;
+              var xpos = y - midpointY;
+              var yval = ypos / midpointX * 20;
+              var xval = xpos / midpointY * 20;
+
+              self.cards.forEach(card => {
+                var images = document.getElementsByClassName("layer");
+                var card = document.getElementById(card.hid + '-card');
+                card.style.transform =
+                  "perspective(550px) rotateY(" + yval/2 + "deg) rotateX(" + xval/2 + "deg)";
+
+                for (var i = 1; i < images.length; ++i) {
+                  var myImg = images[i];
+                  myImg.style =
+                    "transform: perspective(550px) translateZ(" +
+                    myImg.getAttribute("data-depth") / myImg.clientHeight * 5000 +
+                    "px); left: " +
+                    yval * myImg.getAttribute("data-depth") * -1 / 20 +
+                    "%; top: " +
+                    xval * myImg.getAttribute("data-depth") / 20 +
+                    "%;";
+                }
+              })
+            }
+          },
+          draw: function () {
+            setTimeout(() => {
+              var c = document.getElementById(card.hero + card.quality + '-card');
+              var b = document.getElementById(card.hero + card.quality + '-card-back');
+
+              let canvas = document.getElementById(card.hero + card.quality + '-card-front'),
+                ctx = canvas.getContext('2d');
+              const background = new Image();
+              const attack_type = new Image();
+              const frame = new Image();
+              const character = new Image();
+              const border = new Image();
+              const flag = new Image();
+              const effect = new Image();
+              background.src = `https://img.drugwars.io/cards/heroesbkg/${card.quality}.png`;
+              background.onload = () => {
+                character.src = `https://img.drugwars.io/cards/heroes/${card.hero}.png`;
+
+
+                ctx.imageSmoothingEnabled = true;
+                ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+              };
+
+              // frame.onload = () => {
+
+              //   ctx.imageSmoothingEnabled = true;
+              //   ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+              // };
+              character.onload = () => {
+                effect.src = `https://img.drugwars.io/cards/fx/${card.quality}.png`;
+                ctx.imageSmoothingEnabled = true;
+                ctx.drawImage(character, 0, 0, canvas.width, canvas.height);
+              };
+
+              effect.onload = () => {
+                attack_type.src = `https://img.drugwars.io/cards/attack_type/${card.attack_type}.png`;
+                ctx.imageSmoothingEnabled = true;
+                ctx.drawImage(effect, 0, 0, canvas.width, canvas.height);
+              };
+
+              card.flag = drugwars.Cards.heroes[card.family].find(element => element.name === card.hero).flag
+              attack_type.onload = () => {
+                flag.src = `https://img.drugwars.io/flags/${flag_img}.png`;
+                ctx.imageSmoothingEnabled = true;
+                ctx.drawImage(attack_type, 20, 10, 40, 40);
+              };
+
+              flag.onload = () => {
+                // attack_type.src = `./icons/${card.attack_type}.png`;
+                ctx.imageSmoothingEnabled = true;
+                ctx.drawImage(flag, 20, 130, 20, 12);
+                const yellowgradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                yellowgradient.addColorStop('0', '#e6ac00');
+                yellowgradient.addColorStop('0.5', '#ffca31');
+                yellowgradient.addColorStop('1.0', '#fbbd08');
+                ctx.fillStyle = yellowgradient;
+                ctx.textAlign = 'left';
+                ctx.strokeStyle = 'black';
+
+                ctx.textAlign = 'left';
+                ctx.fillStyle = yellowgradient;
+                ctx.shadowColor = 'rgba(0,0,0,1)';
+                ctx.shadowBlur = 3;
+                ctx.fillStyle = '#fff';
+                ctx.font = '10px Legend';
+
+                ctx.font = '16px American Captain';
+                ctx.fillStyle = '#000';
+                var suffixe = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).suffixes[card.quality - 1].name
+                var prefixe = drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).suffixes[card.quality - 1].name
+                self.wrapText(ctx, prefixe + ' ' + card.hero + ' ' + suffixe, 21, 163, canvas.width - 50, 16);
+                ctx.fillStyle = yellowgradient;
+                self.wrapText(ctx, prefixe + ' ' + card.hero + ' ' + suffixe, 20, 162, canvas.width - 50, 16);
+
+                //DRAW attributes TOP
+                ctx.textAlign = 'center';
+                ctx.font = '7px American Captain';
+                ctx.fillStyle = yellowgradient;
+                ctx.fillText('ATTACK', 190, 186);
+                ctx.font = '12px American Captain';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(card.attack, 190, 198);
+
+                ctx.font = '7px American Captain';
+                ctx.fillStyle = yellowgradient;
+                ctx.fillText('HEALTH', 190, 210);
+                ctx.font = '12px American Captain';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(card.health, 190, 222);
+
+                ctx.font = '7px American Captain';
+                ctx.fillStyle = yellowgradient;
+                ctx.fillText('SPEED', 190, 234);
+                ctx.font = '12px American Captain';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(card.speed, 190, 246);
+
+                ctx.font = '7px American Captain';
+                ctx.fillStyle = yellowgradient;
+                ctx.fillText('CARRY', 190, 258);
+                ctx.font = '12px American Captain';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(card.carry, 190, 270);
+
+
+
+                //DRAW attributes BOTTOM
+
+                ctx.textAlign = 'center';
+                ctx.font = '10px American Captain';
+                ctx.fillStyle = yellowgradient;
+                ctx.fillText('PHYSICAL', 35, 265);
+                ctx.font = '14px American Captain';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(card.res_physical, 35, 280);
+
+                ctx.font = '10px American Captain';
+                ctx.fillStyle = yellowgradient;
+                ctx.fillText('WEAPON', 80, 265);
+                ctx.font = '14px American Captain';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(card.res_weapon, 80, 280);
+
+                ctx.font = '10px American Captain';
+                ctx.fillStyle = yellowgradient;
+                ctx.fillText('FIRE', 115, 265);
+                ctx.font = '14px American Captain';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(card.res_fire, 115, 280);
+
+                ctx.font = '10px American Captain';
+                ctx.fillStyle = yellowgradient;
+                ctx.fillText('CHEMICAL', 150, 265);
+                ctx.font = '14px American Captain';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(card.res_chemical, 150, 280);
+
+                //DRAW NAME
+                ctx.textAlign = 'left';
+                ctx.fillStyle = yellowgradient;
+                ctx.shadowColor = 'rgba(0,0,0,1)';
+                ctx.shadowBlur = 3;
+                ctx.font = '13px American Captain';
+                ctx.fillStyle = '#000';
+
+
+                //DRAW SKILLS
+                ctx.font = '10px American Captain';
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = '2';
+                ctx.fillStyle = '#000';
+                ctx.fillRect(20, 168, 38, 14);
+                ctx.stroke();
+                ctx.fillStyle = '#ffc508';
+                ctx.shadowBlur = 0;
+
+                ctx.fillText('ACTIVE', 28, 178);
+                ctx.font = '12px Legend';
+                ctx.shadowBlur = 3;
+                ctx.fillStyle = '#fff';
+                ctx.fillText(drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).name.toString().toUpperCase(), 64, 180);
+                ctx.textAlign = 'left';
+                ctx.font = '7px Helvetica';
+                ctx.fillStyle = '#fff';
+                ctx.shadowBlur = 3;
+                var description = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).description
+                for (var i = 0; i < card.active_skills.values.length; i++) {
+                  var value = "$$value" + [i + 1] + "$$"
+                  description = description.replace(value, card.active_skills.values[i]);
+                }
+                const text_height = self.wrapText(
+                  ctx,
+                  description.toString().toUpperCase(),
+                  20,
+                  192,
+                  canvas.width - 60,
+                  11,
+                );
+
+                ctx.font = '10px American Captain';
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = '2';
+                ctx.fillStyle = '#000';
+                ctx.fillRect(20, text_height + 5, 38, 14);
+                ctx.stroke();
+                ctx.fillStyle = '#ffc508';
+                ctx.shadowBlur = 0;
+                ctx.fillText('PASSIVE', 28, text_height + 15);
+                ctx.font = '12px Legend';
+                ctx.shadowBlur = 3;
+                ctx.fillStyle = '#fff';
+                ctx.fillText(drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).name.toString().toUpperCase(), 64, text_height + 17);
+                ctx.textAlign = 'left';
+                ctx.font = '7px Helvetica';
+                ctx.fillStyle = '#fff';
+                ctx.shadowBlur = 3;
+                var description = drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).description
+                for (var i = 0; i < card.passive_skills.values.length; i++) {
+                  var value = "$$value" + [i + 1] + "$$"
+                  description = description.replace(value, '<span style="color:red">' + card.passive_skills.values[i] + '</span>');
+                }
+                self.wrapText(
+                  ctx,
+                  description.toString().toUpperCase(),
+                  20,
+                  30 + text_height,
+                  canvas.width - 60,
+                  11,
+                );
+
+                ctx.textAlign = 'center';
+                ctx.font = '14px Legend';
+
+                ctx.fillStyle = '#fff';
+                ctx.fillText('X1'.toUpperCase(), 190, 165);
+                self.loading = false;
+
+                b.style.transform = 'rotateY(0deg)';
+                c.style.transform = 'rotateY(0deg)';
+              };
+            }, timer += 100);
+          }
         }
       });
     };
@@ -397,6 +523,7 @@
       background: rgb(2, 2, 2);
       box-shadow: 0px 0px 3px #a87b00;
       border-radius: 10px;
+      height: 90vh;
     }
 
 
@@ -681,11 +808,11 @@
       background-size: contain;
     }
 
-    .q1 {
+    .q5 {
       box-shadow: 0px 0px 60px 6px rgba(8, 218, 255, 0.3) !important;
     }
 
-    .q2 {
+    .q4 {
       box-shadow: 0px 0px 60px 6px rgba(255, 119, 8, 0.3) !important;
     }
 
@@ -693,11 +820,11 @@
       box-shadow: 0px 0px 60px 6px rgba(226, 8, 255, 0.3) !important;
     }
 
-    .q4 {
+    .q2 {
       box-shadow: 0px 0px 60px 6px rgba(66, 255, 8, 0.3) !important;
     }
 
-    .q5 {
+    .q1 {
       box-shadow: 0px 0px 60px 6px rgba(255, 196, 8, 0.3) !important;
     }
 
@@ -709,7 +836,7 @@
       transform: rotateX(10deg) rotateZ(45deg);
     }
 
-    .s1 {
+    .s5 {
       background-image: radial-gradient(circle at center,
           rgba(27, 255, 217, 0),
           rgba(27, 255, 236, 0.2) 35%,
@@ -720,7 +847,7 @@
           rgba(27, 255, 244, 0) 100%);
     }
 
-    .s2 {
+    .s4 {
       background-image: radial-gradient(circle at center,
           rgba(255, 164, 27, 0),
           rgba(255, 175, 27, 0.2) 35%,
@@ -742,7 +869,7 @@
           rgba(255, 27, 244, 0) 100%);
     }
 
-    .s4 {
+    .s2 {
       background-image: radial-gradient(circle at center,
           rgba(92, 255, 27, 0),
           rgba(65, 255, 27, 0.2) 35%,
@@ -753,7 +880,7 @@
           rgba(99, 255, 27, 0) 100%);
     }
 
-    .s5 {
+    .s1 {
       background-image: radial-gradient(circle at center,
           rgba(255, 177, 27, 0),
           rgba(255, 177, 27, 0.2) 35%,
@@ -808,7 +935,7 @@
       left: 0;
       display: none;
       border-radius: 20px;
-
+      overflow: hidden;
       height: 100%;
       width: auto;
       transform: rotateY(180deg);
@@ -888,6 +1015,161 @@
         opacity: 1;
         transform: scale(1) translate3d(0, 0, 0);
       }
+    }
+
+
+    #cardWrapper {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .card {
+      position: relative;
+      /* width: calc(70vh * 0.70756062767475); */
+      /* height: 70vh; */
+      /* overflow: hidden; */
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0px;
+    }
+
+    .card .layer0 {
+      z-index: 0;
+    }
+
+    .card .layer1 {
+      z-index: 1;
+    }
+
+    .card .layer2 {
+      z-index: 2;
+    }
+
+    .card .shadowv {
+      -webkit-filter: opacity(.5) drop-shadow(0 0 0 green);
+      filter: opacity(.5) drop-shadow(0 0 0 green);
+    }
+
+    .card .shadowr {
+      -webkit-filter: opacity(.5) drop-shadow(0 0 0 red);
+      filter: opacity(.5) drop-shadow(0 0 0 red);
+    }
+
+    .card .layer3 {
+      z-index: 3;
+    }
+
+    .card .layer4 {
+      z-index: 4;
+    }
+
+    .card .layer5 {
+      z-index: 5;
+    }
+
+    .card .attack_type {
+      width: 40px !important;
+      height: 40px !important;
+      left: 15px !important;
+      top: 10px !important;
+    }
+
+    .card .layer6 {
+      z-index: 6;
+    }
+
+    .card .layer7 {
+      z-index: 7;
+    }
+
+    .card .layer8 {
+      z-index: 8;
+    }
+
+    .card .layer9 {
+      z-index: 9;
+    }
+
+    .card .layer10 {
+      z-index: 10;
+    }
+
+    .card .text {
+      position: absolute;
+      top: 112px !important;
+      left: 20px !important;
+      text-align: left;
+      line-height: 16px;
+      text-shadow: 0px 0px 5px black, 0px 0px 5px black, 0px 0px 5px black, 0px 0px 5px black;
+    }
+
+    .card .properties {
+      position: relative;
+      top: 156px !important;
+      right: 15px !important;
+      font-family: 'Legend';
+      text-align: center;
+      line-height: 8px;
+      text-shadow: 0px 0px 5px black, 0px 0px 5px black, 0px 0px 5px black, 0px 0px 5px black;
+      width: 30px;
+      float: right;
+    }
+
+    .card .flag {
+      width: 25px;
+      height: 15px;
+      position: relative;
+    }
+
+    .card .name {
+      font-size: 16px;
+      font-family: "American Captain";
+      color: #fbbd08;
+      text-shadow: 0px 0px 5px black, 0px 0px 5px black;
+    }
+
+    .card .skill {
+      background: black;
+      font-size: 10px;
+      font-family: "American Captain";
+      color: #fbbd08;
+      text-shadow: 0px 0px 5px black, 0px 0px 5px black;
+      width: fit-content;
+      padding: 2px 5px;
+    }
+    .card .properties .skill{
+      font-size: 8px;
+    }
+
+    .card .properties .skill_name {
+      font-family: "American Captain";
+      text-align: center;
+      width: 100%;
+      margin-left: 0px;
+    }
+
+    .card .skill_name {
+      margin-left: 2px;
+      font-size: 11px;
+      font-family: "Legend";
+      color: #fff;
+      text-shadow: 0px 0px 5px black, 0px 0px 5px black;
+      width: fit-content;
+      padding: 2px 5px;
+      text-transform: uppercase;
+    }
+
+    .card .skill_desc {
+      font-size: 10px;
+      text-shadow: 0px 0px 5px black, 0px 0px 5px black;
+      width: calc(100% - 45px);
+      text-rendering: optimizeLegibility;
     }
   </style>
 
