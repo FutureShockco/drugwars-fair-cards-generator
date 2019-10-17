@@ -160,11 +160,11 @@ var card = {
             precision: 0
         })
         // todo
-        if (rn > 99999)
+        if (rn > 99990)
             return 'cops'
-        if (rn > 95000)
+        if (rn > 70000)
             return 'cartel'
-        if (rn > 80000)
+        if (rn > 35000)
             return 'mafia'
         return 'gang'
     },
