@@ -17,7 +17,7 @@
     "crypto": "^1.0.1",
     "debug": "^4.1.1",
     "distributions": "^2.1.0",
-    "drugwars": "^0.1.27",
+    "drugwars": "^0.1.28",
     "hash.js": "^1.1.7",
     "mongodb": "^3.3.2",
     "nthline": "^1.0.2",
