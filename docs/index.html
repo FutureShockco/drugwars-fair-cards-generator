@@ -48,9 +48,9 @@
               :id="card.hid+'-card-back'" class="card-back" />
             <div :id="card.hid+'-card-front'" class="card-front">
               <!-- <img src="https://massivepenguin.com/pens/hb3d/01_bg.png" data-depth="18" /> -->
-              <img class="layer layer0" :v-if="card.quality >= 3" :src="'https://img.drugwars.io/cards/background/'+card.bg+'.jpg'"
+              <img class="layer layer0" v-if="card.animated" :src="'https://img.drugwars.io/cards/background/'+card.bg+'.gif'"
                 data-depth="16" />
-              <img class="layer layer0" v-else  :src="'https://img.drugwars.io/cards/background/'+card.bg+'.gif'"
+              <img class="layer layer0" v-else  :src="'https://img.drugwars.io/cards/background/'+card.bg+'.jpg'"
                 data-depth="16" />
               
               <!-- <img class="layer layer1 shadowv" :src="'https://img.drugwars.io/cards/heroes/'+card.hero+'.png'"
@@ -60,10 +60,10 @@
               <!-- <img class="layer layer3" src="https://massivepenguin.com/pens/hb3d/04_mist.png" data-depth="6" /> -->
               <img class="layer layer4 " :src="'https://img.drugwars.io/cards/heroes/'+card.hero+'.png'"
                 data-depth="2" />
-              <img class="layer layer5 attack_type"
-                :src="'https://img.drugwars.io/cards/attack_type/'+card.attack_type+'.png'" data-depth="0" />
               <img class="layer layer7" :src="'https://img.drugwars.io/cards/frames/black.png'" data-depth="0" />
               <img class="layer layer8" :src="'https://img.drugwars.io/cards/fx/'+card.quality+'.png'" data-depth="0" />
+              <img class="layer layer5 attack_type"
+              :src="'https://img.drugwars.io/cards/attack_type/'+card.attack_type+'.png'" data-depth="0" />
               <div class="text layer9" data-depth="0">
                 <img class="flag" :src="'https://img.drugwars.io/flags/'+card.flag+'.png'" />
                 <div class="name">
@@ -184,6 +184,11 @@
                       var value = "$$value" + [i + 1] + "$$"
                       card.passive_desc = card.passive_desc.replace(value, '<span style="color:red;font-weight:900;font-size: 11px;">' + card.passive_skills.values[i] + '</span>');
                     }
+                    if(card.quality > 2){
+                      card.animated = true;
+                    }
+                    else
+                      card.animated = false;
                   });
                   self.cards = newpack;
                 })
@@ -846,10 +851,10 @@
     }
 
     .card .attack_type {
-      width: 40px !important;
-      height: 40px !important;
-      left: 15px !important;
-      top: 10px !important;
+      width: 30px !important;
+      height: 30px !important;
+      left: 175px !important;
+      top: 115px !important;
     }
 
     .card .layer6 {
