@@ -1,7 +1,7 @@
 // CARD
 
 const distributions = require('distributions')
-const random = require('./random.js')
+const random = require('./random.js') 
 const { Cards } = require('drugwars')
 const maxSeeds = 30
 
