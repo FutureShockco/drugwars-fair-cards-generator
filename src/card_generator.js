@@ -5,7 +5,7 @@ const random = require('./random.js')
 const { Cards } = require('drugwars')
 const maxSeeds = 30
 
-var card = {    
+var card = {     
     forge: function (seeds, forceQuality) {
         var newCard = {}
         if (!Array.isArray(seeds)) {
