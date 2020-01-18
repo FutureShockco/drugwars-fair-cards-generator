@@ -1,9 +1,9 @@
 {
-  "name": "drugwars_card_generator",
-  "version": "1.0.2",
-  "description": "A lightweight JavaScript library for DrugWars Cards",
+  "name": "streetrush_card_generator",
+  "version": "0.0.1",
+  "description": "A lightweight JavaScript library for StreetRush Cards",
   "main": "src/index.js",
-  "browser": "dist/drugwars_card_generator.min.js",
+  "browser": "dist/streetrush_card_generator.min.js",
   "scripts": {
     "start": "node src/start.js",
     "build": "taskr cjs && webpack",
@@ -17,7 +17,6 @@
     "crypto": "^1.0.1",
     "debug": "^4.1.1",
     "distributions": "^2.1.0",
-    "drugwars": "^0.1.28",
     "hash.js": "^1.1.7",
     "mongodb": "^3.3.2",
     "nthline": "^1.0.2",
@@ -54,9 +53,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/FutureShockco/drugwars-fair-cards-generator.git"
+    "url": "https://github.com/FutureShockco/streetrush-cards-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/FutureShockco/drugwars-fair-cards-generator/issues"
+    "url": "https://github.com/FutureShockco/streetrush-cards-generator/issues"
   }
 }

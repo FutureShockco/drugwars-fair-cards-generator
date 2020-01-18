@@ -24,12 +24,6 @@ var card = {
             newCard.quality = card.quality(seeds.splice(0, 1))
 
         switch (newCard.type) {
-            // case 'building':
-            //     newCard = this.createBuildingCard(newCard, seeds)
-            //     break;
-            // case 'unit':
-            //     newCard = this.createUnitCard(newCard, seeds)
-            //     break;
             // case 'item':
             //     newCard = this.createItemCard(newCard, seeds)
             //     break;
@@ -41,13 +35,9 @@ var card = {
                 newCard = this.createHeroCard(newCard, seeds)
                 break;
         }
-
-
         newCard.durability = card.uniform(seeds.splice(0, 1), 90, 100)
         newCard.degrability = card.normal(seeds.splice(0, 1), 50, 10)
         newCard.id = this.generateUUID()
-
-        console.log(newCard)
 
         return newCard
     },
@@ -104,12 +94,12 @@ var card = {
             max: 100000,
             precision: 0
         })
-        if (rn > 99000)
-            return 'building'
-        if (rn > 96000)
-            return 'unit'
-        if (rn > 90000)
-            return 'item'
+        // if (rn > 99000)
+        //     return 'building'
+        // if (rn > 96000)
+        //     return 'unit'
+        // if (rn > 90000)
+        //     return 'item'
         return 'hero'
     },
     quality: function (seed) {
@@ -160,8 +150,8 @@ var card = {
             precision: 0
         })
         // todo
-        if (rn > 99990)
-            return 'cops'
+        // if (rn > 99990)
+        //     return 'cops'
         if (rn > 70000)
             return 'cartel'
         if (rn > 35000)
@@ -186,6 +176,7 @@ var card = {
         return skill
     },
     passive_skill: function (skill_seed, modifier_seed, quality, family) {
+        console.log(Cards)
         var availPassives = Cards.passives[family]
         var randomIndex = random.number(skill_seed).mod(availPassives.length)
         var skill = {}
