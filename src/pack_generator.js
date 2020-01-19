@@ -3,7 +3,7 @@ const random = require('./random.js')
 const seedsPerCard = 30
 const cardsPerPack = 5
 
-var list = {total:0,common:0,rare:0,epic:0,legendary:0,mythical:0,building:0,hero:0,unit:0,item:0,tab:{}}
+var list = {total:0,common:0,rare:0,epic:0,legendary:0,mythical:0,hero:0,item:0,tab:{}}
 
 var pack = {
     forge: function(seed) {
@@ -18,19 +18,10 @@ var pack = {
         while (cards.length < cardsPerPack)
             cards.push(card.forge(seeds.splice(0, seedsPerCard)))
 
-        console.log(cards)
         cards.forEach(element => {
-            if(element.type === 'building')
-            {
-                list.building +=1
-            }
-            else if(element.type === 'item')
+            if(element.type === 'item')
             {
                 list.item +=1
-            }
-            else if(element.type === 'unit')
-            {
-                list.unit +=1
             }
             else if(element.type === 'hero')
             {
@@ -66,8 +57,6 @@ var pack = {
         });
         console.log(`Total ${list.total} - Hero :  ${list.hero} Building :  ${list.building} Unit :  ${list.unit} Item :  ${list.item}`)
         console.log(`Percentage of Hero : ${list.hero/list.total*100}%`)
-        console.log(`Percentage of Building : ${list.building/list.total*100}%`)
-        console.log(`Percentage of Unit : ${list.unit/list.total*100}%`)
         console.log(`Percentage of Item : ${list.item/list.total*100}%`)
 
         console.log(`Percentage of common Hero : ${list.common/list.hero*100}%`)

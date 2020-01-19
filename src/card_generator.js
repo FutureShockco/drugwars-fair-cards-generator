@@ -4,6 +4,15 @@ const distributions = require('distributions')
 const random = require('./random.js') 
 const { Cards } = require('drugwars')
 const maxSeeds = 30
+const heroes = require('./heroes.json');
+const passives = require('./passives.json');
+
+const physical = require('./skill_physical.json');
+const weapon = require('./skill_weapon.json');
+const fire = require('./skill_fire.json');
+const chemical = require('./skill_chemical.json');
+
+const actives = {physical,weapon,fire,chemical}
 
 var card = {     
     forge: function (seeds, forceQuality) {
@@ -150,21 +159,20 @@ var card = {
             precision: 0
         })
         // todo
-        // if (rn > 99990)
-        //     return 'cops'
+        if (rn > 99990)
+            return 'cops'
         if (rn > 70000)
-            return 'cartel'
-        if (rn > 35000)
-            return 'mafia'
-        return 'gang'
+            return 'bosses'
+
+        return 'heroes'
     },
     hero: function (seed, family) {
-        var availHeroes = Cards.heroes[family]
+        var availHeroes = heroes[family]
         var randomIndex = random.number(seed).mod(availHeroes.length)
         return availHeroes[randomIndex].name
     },
     active_skill: function (skill_seed, modifier_seed, quality, attack_type) {
-        var availActives = Cards.actives[attack_type]
+        var availActives = actives[attack_type]
         var randomIndex = random.number(skill_seed).mod(availActives.length)
         var skill = {}
         skill.id = availActives[randomIndex].id
@@ -176,8 +184,7 @@ var card = {
         return skill
     },
     passive_skill: function (skill_seed, modifier_seed, quality, family) {
-        console.log(Cards)
-        var availPassives = Cards.passives[family]
+        var availPassives = passives
         var randomIndex = random.number(skill_seed).mod(availPassives.length)
         var skill = {}
         skill.id = availPassives[randomIndex].id

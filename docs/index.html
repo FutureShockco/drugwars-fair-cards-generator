@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/primer-css@9.6.0/build/build.css" />
   <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/drugwars_card_generator@1.0.0"></script>  -->
-  <script src="./drugwars_card_generator.min.js"></script>
+  <script src="./streetrush_card_generator.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/drugwars@0.1.27"></script>
   <script src="https://unpkg.com/dsteem@^0.8.0/dist/dsteem.js"></script>
   <style>
@@ -161,25 +161,26 @@
             var client = new dsteem.Client('https://api.steemit.com')
             client.database.getBlock(self.block).then(function (block) {
               client.database.getTransaction({ block_num: self.block, id: self.tx_id }).then(function (tx) {
-                drugwars_card_generator.random.checkseed(block, tx, self.hash, function (seed) {
-                  let newpack = drugwars_card_generator.pack.forge(seed)
+                console.log(block,tx,self.hash)
+                streetrush_card_generator.random.checkseed(block, tx, self.hash, function (seed) {
+                  let newpack = streetrush_card_generator.pack.forge(seed)
                   let timer = 300;
                   newpack.forEach(card => {
                     card.hid = card.hero + card.id.split('-')[0]
-                    card.flag = drugwars.Cards.heroes[card.family].find(element => element.name === card.hero).flag
-                    card.suffixe = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).suffixes[card.quality - 1].name
-                    card.prefixe = drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).suffixes[card.quality - 1].name
+                    card.flag = streetrush_card_generator.heroes[card.family].find(element => element.name === card.hero).flag
+                    card.suffixe = streetrush_card_generator.actives[card.attack_type].find(element => element.id === card.active_skills.id).suffixes[card.quality - 1].name
+                    card.prefixe = streetrush_card_generator.passives.find(element => element.id === card.passive_skills.id).suffixes[card.quality - 1].name
 
-                    card.bg = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).name
+                    card.bg = streetrush_card_generator.actives[card.attack_type].find(element => element.id === card.active_skills.id).name
 
-                    card.active = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).title
-                    card.active_desc = drugwars.Cards.actives[card.attack_type].find(element => element.id === card.active_skills.id).description
+                    card.active = streetrush_card_generator.actives[card.attack_type].find(element => element.id === card.active_skills.id).title
+                    card.active_desc = streetrush_card_generator.actives[card.attack_type].find(element => element.id === card.active_skills.id).description
                     for (var i = 0; i < card.active_skills.values.length; i++) {
                       var value = "$$value" + [i + 1] + "$$"
                       card.active_desc = card.active_desc.replace(value, '<span style="color:red;font-weight:900;font-size: 11px;">' + card.active_skills.values[i] + '</span>');
                     }
-                    card.passive = drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).name
-                    card.passive_desc = drugwars.Cards.passives[card.family].find(element => element.id === card.passive_skills.id).description
+                    card.passive = streetrush_card_generator.passives.find(element => element.id === card.passive_skills.id).name
+                    card.passive_desc = streetrush_card_generator.passives.find(element => element.id === card.passive_skills.id).description
                     for (var i = 0; i < card.passive_skills.values.length; i++) {
                       var value = "$$value" + [i + 1] + "$$"
                       card.passive_desc = card.passive_desc.replace(value, '<span style="color:red;font-weight:900;font-size: 11px;">' + card.passive_skills.values[i] + '</span>');

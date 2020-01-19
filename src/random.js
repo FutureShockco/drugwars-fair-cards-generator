@@ -31,7 +31,9 @@ var random = {
         });
     },
     transactionSeed: function(block, tx) {
-        return sha512().update(block.transaction_merkle_root+tx.transaction_id).digest('hex')
+        console.log(block.transaction_merkle_root+tx.transaction_id)
+
+        return sha512().update("1a713620866ccc125133493699b3826bef184134af027ede57b7aed0434f217f143ed58b0924396afbf3161812270f77751281b7182fd3a246e012a4616cf289").digest('hex')
     },
     seed: function(block, tx, cb) {
         random.serverSeed(function(serverSeed) {
